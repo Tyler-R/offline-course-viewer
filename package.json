@@ -1,0 +1,18 @@
+{
+  "name": "coursera-dl-viewer",
+  "version": "1.0.0",
+  "description": "A web site to view coursera videos downloaded using coursera-dl",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Tyler Rubenuik",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.2",
+    "pg": "^6.1.5",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.30.4"
+  }
+}
