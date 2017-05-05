@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize'),
     config = require('../../config/database.js');
 
-module.exports.sequelize = new Sequelize(config.database, config.user, config.password, {
+module.exports = new Sequelize(config.database, config.user, config.password, {
     host: config.host,
     dialect: 'postgres',
     pool: {
