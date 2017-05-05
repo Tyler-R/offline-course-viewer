@@ -1,7 +1,7 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
     lectureGroup = require('./lectureGroup.js')
-    file = require('./file.js');
+    file = require('./lectureFile.js');
 
 module.exports = sequelize.define('lecture', {
     id: {
@@ -15,13 +15,6 @@ module.exports = sequelize.define('lecture', {
     name: {
         type: dataType.TEXT
     },
-    fileID: {
-        type: dataType.UUID,
-        references: {
-            model: file,
-            key: 'id'
-        }
-    },
     lectureGroupID: {
         type: dataType.UUID,
         references: {
@@ -31,5 +24,6 @@ module.exports = sequelize.define('lecture', {
     }
 
 }, {
-    freezeTableName: true // don't change database name to "lecutres" (plural)
+    freezeTableName: true, // don't change database name to "lecutres" (plural)
+    timestamps: false,
 });
