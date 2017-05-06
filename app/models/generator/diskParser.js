@@ -32,6 +32,44 @@ module.exports.addPreviouslyDownloadedCoursesToDatabase = (folderPath) => {
     });
 }
 
+function _getLectureInformationFromLectureFiles(lectureFileMapping) {
+    var lectureMapping = {};
+    for (var key in lectureFileMapping) {
+        lectureFileMapping[key].forEach(lectureFile => {
+            var pattern = new RegExp('([0-9]+)_([^_.]+)');
+            var result = pattern.exec(lectureFile);
+
+            if(lectureMapping[key]) {
+                lectureMapping[key].add(result[0]);
+            } else {
+                lectureMapping[key] = new Set();
+                lectureMapping[key].add(result[0]);
+            }
+        });
+    }
+
+    return lectureMapping;
+}
+
+function mapLectureInformationToLectureFiles(lectureFiles) {
+    var lectureMapping = {};
+    lectureFiles.forEach(lectureFile => {
+        var pattern = new RegExp('([0-9]+)_([^_.]+)');
+        var result = pattern.exec(lectureFile);
+
+        var lectureName = result[0];
+
+        if(lectureMapping[lectureName]) {
+            lectureMapping[lectureName].push(lectureFile);
+        } else {
+            lectureMapping[lectureName] = [];
+            lectureMapping[lectureName].push(lectureFile);
+        }
+    });
+
+    return lectureMapping;
+}
+
 function _getCourseInformationFromDisk(courseFolderPath, courseName) {
     return new Promise((success, failure) => {
         _getWeekInformationFromDisk(courseFolderPath, courseName)
@@ -41,18 +79,20 @@ function _getCourseInformationFromDisk(courseFolderPath, courseName) {
                 var promises = [];
                 for (var key in weekToLectureGroupMaps) {
                     var weekFolderPath = path.join(courseFolderPath, key);
-                    promises.push(_getLectureInformationFromDisk(weekFolderPath, weekToLectureGroupMaps[key]));
+                    promises.push(_getLectureInformationFromDisk(weekFolderPath, weekToLectureGroupMaps[key], key));
                 }
 
-                Promise.all(promises).then((lectureGroupToLectureMappings)=> {
-                    var lectureGroupToLectureMaps = {};
-                    lectureGroupToLectureMappings.forEach(lectureGroupToLectureMapping => {
-                        for (var key in lectureGroupToLectureMapping) {
-                            lectureGroupToLectureMaps[key] = lectureGroupToLectureMapping[key];
+                Promise.all(promises).then(weekTolectureGroupToLectureFileMappings => {
+                    // var weekTolectureGroupToLectureFileMap = {};
+                    var courseMapping = {};
+                    courseMapping[courseName] = {};
+                    weekTolectureGroupToLectureFileMappings.forEach(weekTolectureGroupToLectureFileMapping => {
+                        for (var week in weekTolectureGroupToLectureFileMapping) {
+                            courseMapping[courseName][week] = weekTolectureGroupToLectureFileMapping[week];
                         }
                     });
 
-                    success(courseToWeekMap, weekToLectureGroupMaps, lectureGroupToLectureMaps);
+                    success(courseMapping);
                 });
             });
         });
@@ -114,7 +154,7 @@ function _getLectureGroupInfomationFromDisk(courseFolderPath, weekFolders) {
     });
 }
 
-function _getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders) {
+function _getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders, weekFolder) {
     return new Promise((success, failure) => {
         var promises = [];
         lectureGroupFolders.forEach(lectureGroupFolder => {
@@ -138,40 +178,44 @@ function _getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders) {
 
         Promise.all(promises).then(lectureGroupToLectureMaps => {
             var mapping = {};
+            mapping[weekFolder] = {};
             lectureGroupToLectureMaps.forEach(lectureGroupToLectureMapping => {
                 for (var key in lectureGroupToLectureMapping) {
-                    mapping[key] = lectureGroupToLectureMapping[key];
+                    mapping[weekFolder][key] = lectureGroupToLectureMapping[key];
                 }
             });
-            console.log(mapping);
+
+            for (var lectureGroup in mapping[weekFolder]) {
+                mapping[weekFolder][lectureGroup] = mapLectureInformationToLectureFiles(mapping[weekFolder][lectureGroup])
+            }
 
             success(mapping);
         });
     });
 }
 
-function addCourseDiskInformationToDatabase(courseName, courseToWeekMap, weekToLectureGroupMaps, lectureGroupToLectureMaps) {
+function addCourseDiskInformationToDatabase(courseName, courseToWeekMap, weekTolectureGroupToLectureMaps) {
     var name = courseName.replace(/-/g, ' ');
     schema.course.build({name}).save()
     .then(savedCourse => {
         courseToWeekMap[courseName].forEach((weekFolderName) => {
-            addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, weekToLectureGroupMaps, lectureGroupToLectureMaps);
+            addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, weekTolectureGroupToLectureMaps);
         });
-    }).catch((err) => {
+    }).catch(err => {
         console.log("could not insert '" + courseName + "' into the database");
     });
 }
 
-function addWeekDiskInformationToDatabase(courseID, weekFolderName, weekToLectureGroupMaps, lectureGroupToLectureMaps) {
+function addWeekDiskInformationToDatabase(courseID, weekFolderName, weekTolectureGroupToLectureMaps) {
     var parsedWeekFolderName = weekFolderName.split('_');
     var position = parsedWeekFolderName[0];
     var name = parsedWeekFolderName[1].replace(/-/g, ' ');
 
     schema.week.build({position, name, courseID}).save()
     .then(savedWeek => {
-        weekToLectureGroupMaps[weekFolderName].forEach(lectureGroupFolderName => {
-            addLectureGroupInformationToDatabase(savedWeek.id, lectureGroupFolderName, lectureGroupToLectureMaps);
-        });
+        for (var lectureGroupFolderName in weekTolectureGroupToLectureMaps[weekFolderName]) {
+            addLectureGroupInformationToDatabase(savedWeek.id, lectureGroupFolderName, weekTolectureGroupToLectureMaps[weekFolderName]);
+        }
     }).catch(err => {
         console.log("could not insert '" + weekFolderName + "' into the database");
     });
@@ -203,8 +247,9 @@ var courseName = "finance-for-non-finance"
 var courseFolderPath = "F:\\Dropbox\\courses\\www-coursera-downloader\\finance-for-non-finance"
 
 _getCourseInformationFromDisk(courseFolderPath, courseName)
-.then((courseToWeekMap, weekToLectureGroupMaps, lectureGroupToLectureMaps) => {
-    // addCourseDiskInformationToDatabase(courseName, courseToWeekMap, weekToLectureGroupMaps, lectureGroupToLectureMaps);
+.then((courseMap) => {
+    console.log(JSON.stringify(courseMap, null, 2));
+    addCourseDiskInformationToDatabase(courseName, courseMap);
 });
 
 
