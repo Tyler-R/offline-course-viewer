@@ -13,5 +13,6 @@ module.exports = sequelize.define('course', {
         unique: true
     }
 }, {
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false,
 });

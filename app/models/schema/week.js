@@ -24,5 +24,6 @@ module.exports = sequelize.define('week', {
         }
     }
 }, {
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false,
 });

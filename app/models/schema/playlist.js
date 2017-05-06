@@ -13,7 +13,8 @@ module.exports = sequelize.define('playlist', {
         type: dataType.TEXT
     },
     name: {
-        type: dataType.TEXT
+        type: dataType.TEXT,
+        unique: true
     },
     courseID: {
         type: dataType.UUID,
@@ -23,5 +24,6 @@ module.exports = sequelize.define('playlist', {
         }
     }
 }, {
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false,
 });

@@ -24,5 +24,6 @@ module.exports = sequelize.define('course', {
         }
     }
 }, {
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false,
 });
