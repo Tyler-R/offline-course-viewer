@@ -5,15 +5,36 @@ var course = require('./schema/course.js'),
     playlist = require('./schema/playlist.js'),
     week = require('./schema/week.js');
 
-var tables = {playlist, course, week, lectureGroup, lecture, lectureFile};
+var tables = {course, playlist, week, lectureGroup, lecture, lectureFile};
 
 // export all the schemas
 for(var key in tables) {
     module.exports[key] = tables[key];
 }
 
-module.exports.syncAll = () => {
-    for (var key in tables) {
-        tables[key].sync({logging: false})
+function syncAllTables(keys, keyIndex, onFinish, onFailure) {
+    if(keyIndex > (keys.length - 1)) {
+        onFinish();
+        return;
     }
+
+    var key = keys[keyIndex];
+
+    tables[key].sync({logging: false})
+    .then(() => {
+        console.log("successfully created database table: " + key);
+        syncAllTables(keys, keyIndex + 1, onFinish, onFailure);
+    }).catch((err) => {
+        console.log("could not create " + key + " database table because: ");
+        console.log(err);
+        onFailure();
+    });
+
+
+}
+
+module.exports.syncAll = () => {
+    return new Promise((success, failure) => {
+        syncAllTables(Object.keys(tables), 0, success, failure);
+    });
 }
