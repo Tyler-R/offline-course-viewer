@@ -3,7 +3,7 @@ var sequelize = require('../sequelize.js'),
     week = require('./week.js');
 
 
-module.exports = sequelize.define('course', {
+module.exports = sequelize.define('lectureGroup', {
     id: {
         type: dataType.UUID,
         primaryKey: true,
