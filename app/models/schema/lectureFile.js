@@ -1,5 +1,6 @@
 var sequelize = require('../sequelize.js'),
-    dataType = require('sequelize');
+    dataType = require('sequelize')
+    lecture = require('./lecture.js');
 
 
 module.exports = sequelize.define('lectureFile', {
@@ -20,7 +21,7 @@ module.exports = sequelize.define('lectureFile', {
     lectureID: {
         type: dataType.UUID,
         references: {
-            model: file,
+            model: lecture,
             key: 'id'
         }
     },
