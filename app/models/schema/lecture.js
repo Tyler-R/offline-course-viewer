@@ -1,7 +1,6 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    lectureGroup = require('./lectureGroup.js')
-    file = require('./lectureFile.js');
+    lectureGroup = require('./lectureGroup.js');
 
 module.exports = sequelize.define('lecture', {
     id: {
