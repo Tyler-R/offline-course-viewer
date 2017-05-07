@@ -21,7 +21,7 @@ module.exports.addPreviouslyDownloadedCoursesToDatabase = (folderPath) => {
         folders.forEach((courseName) => {
             console.log("building data for: " + courseName);
 
-            _getCourseInformationFromDisk(path.join(folderPath, courseName), courseName)
+            getCourseInformationFromDisk(path.join(folderPath, courseName), courseName)
             .then((courseMap) => {
                 // console.log(JSON.stringify(courseMap, null, 2));
                 addCourseDiskInformationToDatabase(courseName, courseMap);
@@ -55,16 +55,16 @@ function mapLectureInformationToLectureFiles(lectureFiles) {
     return lectureMapping;
 }
 
-function _getCourseInformationFromDisk(courseFolderPath, courseName) {
+function getCourseInformationFromDisk(courseFolderPath, courseName) {
     return new Promise((success, failure) => {
-        _getWeekInformationFromDisk(courseFolderPath, courseName)
+        getWeekInformationFromDisk(courseFolderPath, courseName)
         .then((courseToWeekMap) => {
-            _getLectureGroupInfomationFromDisk(courseFolderPath, courseToWeekMap[courseName])
+            getLectureGroupInfomationFromDisk(courseFolderPath, courseToWeekMap[courseName])
             .then(weekToLectureGroupMaps => {
                 var promises = [];
                 for (var key in weekToLectureGroupMaps) {
                     var weekFolderPath = path.join(courseFolderPath, key);
-                    promises.push(_getLectureInformationFromDisk(weekFolderPath, weekToLectureGroupMaps[key], key));
+                    promises.push(getLectureInformationFromDisk(weekFolderPath, weekToLectureGroupMaps[key], key));
                 }
 
                 Promise.all(promises).then(weekTolectureGroupToLectureFileMappings => {
@@ -84,7 +84,7 @@ function _getCourseInformationFromDisk(courseFolderPath, courseName) {
     });
 }
 
-function _getWeekInformationFromDisk(courseFolderPath, courseFolderName) {
+function getWeekInformationFromDisk(courseFolderPath, courseFolderName) {
 
     return new Promise((success, failure) => {
         getFoldersInDirectory(courseFolderPath).then(weekFolders => {
@@ -104,7 +104,7 @@ function _getWeekInformationFromDisk(courseFolderPath, courseFolderName) {
     });
 }
 
-function _getLectureGroupInfomationFromDisk(courseFolderPath, weekFolders) {
+function getLectureGroupInfomationFromDisk(courseFolderPath, weekFolders) {
     return new Promise((success, failure) => {
         var promises = [];
         weekFolders.forEach(weekFolder => {
@@ -139,7 +139,7 @@ function _getLectureGroupInfomationFromDisk(courseFolderPath, weekFolders) {
     });
 }
 
-function _getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders, weekFolder) {
+function getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders, weekFolder) {
     return new Promise((success, failure) => {
         var promises = [];
         lectureGroupFolders.forEach(lectureGroupFolder => {
