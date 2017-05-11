@@ -1,10 +1,13 @@
-var schema = require('./models/schema.js')
+var schema = require('./models/schema.js'),
     express = require('express'),
+    path = require('path'),
     app = express();
 
-port = 3030;
+var port = 3030;
 
-app.get('/', (req, res) => {
+app.use('/', express.static(path.resolve(__dirname, 'public')));
+
+app.get('/courses', (req, res) => {
     schema.course.findAll({attributes: ['name']}).then(courses => {
         var response = []
         courses.forEach(course => {
