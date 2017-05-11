@@ -1,5 +1,5 @@
 var sequelize = require('../sequelize.js'),
-    dataType = require('sequelize')
+    dataType = require('sequelize'),
     lecture = require('./lecture.js');
 
 
