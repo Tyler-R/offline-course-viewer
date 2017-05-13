@@ -3,7 +3,7 @@ var Sequelize = require('sequelize'),
 
 module.exports = new Sequelize(config.database, config.user, config.password, {
     host: config.host,
-    dialect: 'postgres',
+    dialect: config.dialect,
     pool: {
         max: 10,
         min: 0,
