@@ -13,8 +13,7 @@ module.exports = sequelize.define('week', {
         type: dataType.INTEGER
     },
     name: {
-        type: dataType.TEXT,
-        unique: true
+        type: dataType.TEXT
     },
     courseID: {
         type: dataType.UUID,

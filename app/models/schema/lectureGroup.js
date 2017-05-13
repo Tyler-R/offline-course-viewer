@@ -13,8 +13,7 @@ module.exports = sequelize.define('lectureGroup', {
         type: dataType.INTEGER
     },
     name: {
-        type: dataType.TEXT,
-        unique: true
+        type: dataType.TEXT
     },
     weekID: {
         type: dataType.UUID,
