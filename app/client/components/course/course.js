@@ -14,13 +14,6 @@ class Course extends Component {
         };
     }
 
-    displayCourseSettings(event) {
-        console.log("display settings for " + this.state.name);
-        console.log(event);
-        console.log(event.target)
-        event.stopPropagation();
-    }
-
     handleClick(event) {
         this.setState({
             id: this.state.id,
