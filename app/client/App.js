@@ -20,29 +20,35 @@ class App extends Component {
 
                 $(document).ready(() => {
                     $('.collapsible').collapsible();
-                    $('.dropdown-button').dropdown({
-                        stopPropagation: true,
-                        belowOrigin: true,
-                        alignment: 'right',
-                        inDuration: 200,
-                        outDuration: 150,
-                        constrainWidth: false,
-                        hover: true,
-                        gutter: 1,
-                    });
-
-                    // var $panel_headers = $('.collapsible').find('> li > .collapsible-header');
-                    /*$(".collapsible > li > .collapsible-header > a").click(function(e) {
-                        console.log(e);
-                        console.log(e.target);
-                        e.stopPropagation();
-                    })*/
 
                     // stops button and icons from expanding and collapsing the collapsible section
-                    $(".collapsible > li > .collapsible-header > .collapse-disabled").click(function(e) {
-                        console.log(e);
+                    $(".collapse-disabled").click((e) => {
                         e.stopPropagation();
-                    })
+                    });
+
+                    $(".dropdown").click((e) => {
+                        if($(e.target).hasClass('dropdown-icon')) {
+                            // dropdown icon wwas clicked do display dropdown menu
+                            $(e.target).siblings(".dropdown-list").toggleClass("show");
+                        } else {
+                            // item in dropdown menu was clicked
+                            $(e.target).parents('.dropdown-list').toggleClass("show")
+                            console.log($(e.target));
+                        }
+                    });
+
+                    window.onclick = (e) => {
+                        if (!event.target.matches('.dropdown-icon')) {
+
+                            let dropdowns = document.getElementsByClassName("dropdown-list");
+                            for (let i = 0; i < dropdowns.length; i++) {
+                                var openDropdown = dropdowns[i];
+                                if (openDropdown.classList.contains('show')) {
+                                    openDropdown.classList.remove('show');
+                                }
+                            }
+                        }
+                    }
 
                 });
             });

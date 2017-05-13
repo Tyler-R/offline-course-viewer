@@ -12,10 +12,6 @@ class Course extends Component {
             name: props.name,
             collapsed: true
         };
-
-
-        // console.log(materialize);
-        // console.log(JSON.stringify(materialize));
     }
 
     displayCourseSettings(event) {
@@ -26,7 +22,6 @@ class Course extends Component {
     }
 
     handleClick(event) {
-        console.log("expanding / contracting" + this.state.name);
         this.setState({
             id: this.state.id,
             name: this.state.name,
@@ -59,16 +54,16 @@ class Course extends Component {
                                         {this.state.name}
                                     </span>
 
-                                    <a className="dropdown-button btn-floating btn-sm white z-depth-0 right" data-activates={this.state.id}>
-                                        <i className="material-icons black-text" onClick={(e) => {this.displayCourseSettings(e)}}>
-                                            settings
-                                        </i>
-                                    </a>
+                                    <div className="dropdown right collapse-disabled">
+                                            <i className="material-icons black-text dropdown-icon">
+                                                settings
+                                            </i>
 
-                                    <ul id={this.state.id} className='dropdown-content'>
-                                        <li><a className="collapse-disabled" onClick={(e) => {this.displayCourseSettings(e)}}>edit name</a></li>
-                                        <li><a href='#'>move</a></li>
-                                    </ul>
+                                        <ul id={this.state.id} className="dropdown-list">
+                                            <li><a href="#!">edit name</a></li>
+                                            <li><a href='#!'>move</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
 
                                 <a href="#" className="btn right bottom-button collapse-disabled">Go to Course</a>

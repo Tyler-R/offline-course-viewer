@@ -6,3 +6,37 @@
 .bottom-button {
     margin-bottom: 8pt;
 }
+
+.dropdown-icon {
+
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/*don't use .dropdown-list as it is declared in materialize-css*/
+.dropdown-list {
+    display: none;
+    position: fixed;
+    margin-left: -150px;
+    margin-top: 30px;
+    background-color: white;
+    width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-list a {
+    color: black;
+    padding-left: 15px;
+}
+
+.dropdown-list li:hover{
+    background-color: blue;
+}
+
+.show {
+    display: block;
+}
