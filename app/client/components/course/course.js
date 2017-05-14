@@ -30,8 +30,6 @@ class Course extends Component {
             });
         }
 
-
-
         this.setState({
             collapsed: !this.state.collapsed,
         });
@@ -39,7 +37,7 @@ class Course extends Component {
 
     render() {
         let weeks = [];
-        if (this.state.weeks) {
+        if (this.state.weeks && !this.state.collapsed) {
             weeks = this.state.weeks.map(week => {
                 return <Week key={week.name} name={week.name} position={week.position}></Week>;
             });
@@ -51,37 +49,36 @@ class Course extends Component {
         return (
             <span className='row'>
                 <div className='col s6 offset-s3'>
-                    <ul className="collapsible popout" data-collapsible="accordion">
-                        <li className="disabled">
-                            <span className="collapsible-header course-container" onClick={(e) => this.handleClick(e)}>
-                                <div>
-                                    <i className="material-icons">
-                                        {collapseIconName}
+                    <ul className="collection with-header">
+                        <li className="course-container collection-header" onClick={(e) => this.handleClick(e)}>
+                            <div>
+                                <i className="material-icons course-dropdown-icon">
+                                    {collapseIconName}
+                                </i>
+                                <span className="course-name">
+                                    {this.state.name}
+                                </span>
+
+                                <div className="dropdown right collapse-disabled">
+                                    <i className="material-icons black-text dropdown-icon">
+                                        settings
                                     </i>
-                                    <span>
-                                        {this.state.name}
-                                    </span>
 
-                                    <div className="dropdown right collapse-disabled">
-                                            <i className="material-icons black-text dropdown-icon">
-                                                settings
-                                            </i>
-
-                                        <ul id={this.state.id} className="dropdown-list">
-                                            <li><a href="#!">edit name</a></li>
-                                            <li><a href='#!'>move</a></li>
-                                        </ul>
-                                    </div>
+                                    <ul id={this.state.id} className="dropdown-list">
+                                        <li><a href="#!">edit name</a></li>
+                                        <li><a href='#!'>move</a></li>
+                                    </ul>
                                 </div>
+                            </div>
 
-                                <a href="#" className="btn right bottom-button collapse-disabled">Go to Course</a>
+                            <a href="#" className="btn right bottom-button collapse-disabled">Go to Course</a>
 
-                            </span>
-
-                            <div className="collapsible-body">
-                                {weeks}
-                          </div>
                         </li>
+                        {weeks.length > 0 &&
+                            <ul className="collection">
+                                {weeks}
+                            </ul>
+                        }
                     </ul>
 
 

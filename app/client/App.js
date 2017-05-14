@@ -19,8 +19,6 @@ class App extends Component {
                 this.setState({courses});
 
                 $(document).ready(() => {
-                    $('.collapsible').collapsible();
-
                     // stops button and icons from expanding and collapsing the collapsible section
                     $(".collapse-disabled").click((e) => {
                         e.stopPropagation();
