@@ -86,6 +86,54 @@ app.get('/lectureGroups', (req, res) => {
     })
 });
 
+app.get('/lectures', (req, res) => {
+    let courseName = req.query.courseName;
+    let weekName = req.query.weekName;
+    let lectureGroupName = req.query.lectureGroupName;
+    console.log(courseName + "   " + weekName + "   " + lectureGroupName);
+
+    schema.course.find({
+        attributes: ["id"],
+        where: {
+            name: courseName
+        }
+    }).then(course => {
+        schema.week.find({
+            attributes: ["id"],
+            where: {
+                courseID: course.id,
+                name: weekName,
+            }
+        }).then(week => {
+            schema.lectureGroup.find({
+                attributes: ["id"],
+                where: {
+                    weekID: week.id,
+                    name: lectureGroupName,
+                }
+            }).then(lectureGroup => {
+                schema.lecture.findAll({
+                    attributes: ["position", "name"],
+                    where: {
+                        lectureGroupID: lectureGroup.id
+                    }
+                }).then(lectures => {
+                    let response = [];
+                    lectures.forEach(lecture => {
+                        response.push({
+                            name: lecture.name,
+                            position: lecture.position,
+                        });
+                    });
+
+                    res.send(response);
+                })
+            });
+        })
+    })
+});
+
+
 schema.syncAll().then(() => {
     app.listen(port, () => {
         console.log("server listening on port: " + port);

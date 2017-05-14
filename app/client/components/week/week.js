@@ -42,9 +42,9 @@ class Week extends Component {
     render() {
         let lectureGroups = [];
 
-        if(!this.state.collapsed) {
+        if(this.state.lectureGroups && !this.state.collapsed) {
             lectureGroups = this.state.lectureGroups.map(lectureGroup => {
-                return <LectureGroup key={lectureGroup.name} name={lectureGroup.name} position={lectureGroup.position}></LectureGroup>;
+                return <LectureGroup key={lectureGroup.name} name={lectureGroup.name} position={lectureGroup.position} courseName={this.state.courseName} weekName={this.state.name}></LectureGroup>;
             });
         }
 
