@@ -28,11 +28,11 @@ class Lecture extends Component {
             <span>
                 <li className="collection-item" onClick={(e) => this.handleClick(e)}>
                     <div>
-                        <i className="material-icons">
+                        <i className="material-icons lecture-icon">
                             play_circle_outline
                         </i>
 
-                        <span>
+                        <span className="lecture-title">
                             {this.state.name}
                         </span>
 
