@@ -49,6 +49,43 @@ app.get('/weeks', (req, res) => {
     })
 });
 
+app.get('/lectureGroups', (req, res) => {
+    let courseName = req.query.courseName;
+    let weekName = req.query.weekName;
+
+    schema.course.find({
+        attributes: ["id"],
+        where: {
+            name: courseName
+        }
+    }).then(course => {
+        schema.week.find({
+            attributes: ["id"],
+            where: {
+                courseID: course.id,
+                name: weekName,
+            }
+        }).then(week => {
+            schema.lectureGroup.findAll({
+                attributes: ["position", "name"],
+                where: {
+                    weekID: week.id,
+                }
+            }).then(lectureGroups => {
+                let response = [];
+                lectureGroups.forEach(lectureGroup => {
+                    response.push({
+                        name: lectureGroup.name,
+                        position: lectureGroup.position,
+                    });
+                });
+
+                res.send(response);
+            });
+        })
+    })
+});
+
 schema.syncAll().then(() => {
     app.listen(port, () => {
         console.log("server listening on port: " + port);

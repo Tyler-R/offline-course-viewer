@@ -39,7 +39,7 @@ class Course extends Component {
         let weeks = [];
         if (this.state.weeks && !this.state.collapsed) {
             weeks = this.state.weeks.map(week => {
-                return <Week key={week.name} name={week.name} position={week.position}></Week>;
+                return <Week key={week.name} name={week.name} position={week.position} courseName={this.state.name}></Week>;
             });
         }
 
