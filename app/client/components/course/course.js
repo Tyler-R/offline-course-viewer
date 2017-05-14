@@ -10,27 +10,29 @@ class Course extends Component {
         this.state = {
             id: props.id,
             name: props.name,
-            collapsed: true
+            weeks: [],
+            collapsed: true,
         };
     }
 
     handleClick(event) {
         if(this.state.collapsed) {
+            let self = this;
             axios.get('/weeks', {
                 params: {
                     courseName: this.state.name
                 }
             })
-            .then(response => {
-                console.log(response);
+            .then(weeks => {
+                self.setState({
+                    weeks: weeks.data,
+                });
             });
         }
 
 
 
         this.setState({
-            id: this.state.id,
-            name: this.state.name,
             collapsed: !this.state.collapsed,
         });
     }
@@ -39,7 +41,7 @@ class Course extends Component {
         let weeks = [];
         if (this.state.weeks) {
             weeks = this.state.weeks.map(week => {
-                return <Week key={week.name} name={week.name}></Week>;
+                return <Week key={week.name} name={week.name} position={week.position}></Week>;
             });
         }
 

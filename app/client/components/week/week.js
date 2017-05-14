@@ -7,13 +7,14 @@ class Week extends Component {
         super(props);
 
         this.state = {
-            name: props.name
+            name: props.name,
+            position: props.position,
         }
     }
 
     render() {
         return (
-            <div>{props.name}</div>
+            <div>{this.state.name}</div>
         );
     }
 
