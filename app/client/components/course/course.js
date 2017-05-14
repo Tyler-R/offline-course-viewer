@@ -15,6 +15,19 @@ class Course extends Component {
     }
 
     handleClick(event) {
+        if(this.state.collapsed) {
+            axios.get('/weeks', {
+                params: {
+                    courseName: this.state.name
+                }
+            })
+            .then(response => {
+                console.log(response);
+            });
+        }
+
+
+
         this.setState({
             id: this.state.id,
             name: this.state.name,
