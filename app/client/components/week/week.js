@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import LectureGroup from '../lectureGroup/lectureGroup.js'
 import style from './week.scss';
 import axios from 'axios';
 
