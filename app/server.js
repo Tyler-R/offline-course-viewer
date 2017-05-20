@@ -33,7 +33,7 @@ app.get('/weeks', (req, res) => {
         schema.week.findAll({
             attributes: ["position", "name"],
             where: {
-                courseID: course.id
+                courseId: course.id
             }
         }).then(weeks => {
             let response = [];
@@ -62,14 +62,14 @@ app.get('/lectureGroups', (req, res) => {
         schema.week.find({
             attributes: ["id"],
             where: {
-                courseID: course.id,
+                courseId: course.id,
                 name: weekName,
             }
         }).then(week => {
             schema.lectureGroup.findAll({
                 attributes: ["position", "name"],
                 where: {
-                    weekID: week.id,
+                    weekId: week.id,
                 }
             }).then(lectureGroups => {
                 let response = [];
@@ -101,21 +101,21 @@ app.get('/lectures', (req, res) => {
         schema.week.find({
             attributes: ["id"],
             where: {
-                courseID: course.id,
+                courseId: course.id,
                 name: weekName,
             }
         }).then(week => {
             schema.lectureGroup.find({
                 attributes: ["id"],
                 where: {
-                    weekID: week.id,
+                    weekId: week.id,
                     name: lectureGroupName,
                 }
             }).then(lectureGroup => {
                 schema.lecture.findAll({
-                    attributes: ["position", "name"],
+                    attributes: ["position", "name", "type", "completed"],
                     where: {
-                        lectureGroupID: lectureGroup.id
+                        lectureGroupId: lectureGroup.id
                     }
                 }).then(lectures => {
                     let response = [];
@@ -123,6 +123,8 @@ app.get('/lectures', (req, res) => {
                         response.push({
                             name: lecture.name,
                             position: lecture.position,
+                            type: lecture.type,
+                            completed: lecture.completed,
                         });
                     });
 
