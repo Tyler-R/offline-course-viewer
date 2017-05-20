@@ -44,8 +44,20 @@ class LectureGroup extends Component {
         let lectures = [];
 
         if(this.state.lectures && !this.state.collapsed) {
+            console.log(this.state.lectures);
             lectures = this.state.lectures.map(lecture => {
-                return <Lecture key={lecture.name} name={lecture.name} position={lecture.position} courseName={this.state.courseName} weekName={this.state.weekName} lectureGroupName={this.state.name}></Lecture>;
+                return (
+                    <Lecture
+                        key={lecture.name}
+                        name={lecture.name}
+                        position={lecture.position}
+                        type={lecture.type}
+                        completed={lecture.completed}
+                        courseName={this.state.courseName}
+                        weekName={this.state.weekName}
+                        lectureGroupName={this.state.name}>
+                    </Lecture>
+                );
             });
         }
 

@@ -10,6 +10,8 @@ class Lecture extends Component {
         this.state = {
             name: props.name,
             position: props.position,
+            type: props.type,
+            completed: props.completed,
             courseName: props.courseName,
             weekName: props.weekName,
             lectureGroupName: props.lectureGroupName,
@@ -24,12 +26,25 @@ class Lecture extends Component {
     }
 
     render() {
+        let videoPlayIcon = this.state.completed ? "play_circle_filled" : "play_circle_outline";
+        let readingPlayIcon = "chrome_reader_mode";
+
+        let playIcon = '';
+        if(this.state.type === 'video') {
+            playIcon = videoPlayIcon;
+        } else if(this.state.type == 'reading') {
+            playIcon = readingPlayIcon;
+        }
+
+        console.log(playIcon);
+        console.log(this.state.type);
+
         return (
             <span>
                 <li className="collection-item" onClick={(e) => this.handleClick(e)}>
                     <div>
                         <i className="material-icons lecture-icon">
-                            play_circle_outline
+                            {playIcon}
                         </i>
 
                         <span className="lecture-title">
