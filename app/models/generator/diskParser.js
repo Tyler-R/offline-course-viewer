@@ -17,23 +17,46 @@ function getFoldersInDirectory(folderPath) {
 }
 
 module.exports.addPreviouslyDownloadedCoursesToDatabase = (folderPath) => {
-    getFoldersInDirectory(folderPath).then(folders => {
-        folders.forEach((courseName) => {
-            console.log("building data for: " + courseName);
+    schema.playlist.findOrCreate({
+        where: {
+            isDefault: true
+        }, defaults: {
+            name: "Default",
+            position: 0,
+            isDefault: true,
+        }
+    }).spread((savedPlaylist, wasCreated) => {
+        var playlistId = savedPlaylist.id;
+        schema.course.max('position', {
+            where: {
+                playlistId
+            }
+        }).then(maxPosition => {
+            if(!maxPosition) {
+                maxPosition = 0;
+            }
+            getFoldersInDirectory(folderPath).then(folders => {
+                folders.forEach((courseName) => {
+                    console.log("building data for: " + courseName);
 
-            getCourseInformationFromDisk(path.join(folderPath, courseName), courseName)
-            .then((courseMap) => {
-                // console.log(JSON.stringify(courseMap, null, 2));
-                addCourseDiskInformationToDatabase(courseName, courseMap);
+                    getCourseInformationFromDisk(path.join(folderPath, courseName), courseName)
+                    .then((courseMap) => {
+
+                        addCourseDiskInformationToDatabase(courseName, playlistId, maxPosition, courseMap);
+                        maxPosition++;
+                    }).catch((err) => {
+                        console.log("could not add '" + folder + "' to course list as it does not have the correct folder structure.");
+                        console.log(err);
+                    });
+                });
             }).catch((err) => {
-                console.log("could not add '" + folder + "' to course list as it does not have the correct folder structure.");
+                console.log("could not get foilders in: " + folderPath + " because: ");
                 console.log(err);
             });
         });
-    }).catch((err) => {
-        console.log("could not get foilders in: " + folderPath + " because: ");
-        console.log(err);
+
     });
+
 }
 
 function mapLectureInformationToLectureFiles(lectureFiles) {
@@ -180,25 +203,31 @@ function getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders, week
     });
 }
 
-function addCourseDiskInformationToDatabase(courseName, courseMap) {
+function addCourseDiskInformationToDatabase(courseName, playlistId, position, courseMap) {
     var name = courseName.replace(/-/g, ' ');
-    schema.course.build({name}).save()
-    .then(savedCourse => {
-        for (var weekFolderName in courseMap[courseName]) {
-            addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, courseMap[courseName]);
-        }
-    }).catch(err => {
-        console.log("could not insert '" + courseName + "' into the course database because: ");
-        console.log(err);
-    });
+    var name = courseName;
+
+        schema.course.build({
+            name,
+            position,
+            playlistId
+        }).save()
+        .then(savedCourse => {
+            for (var weekFolderName in courseMap[courseName]) {
+                addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, courseMap[courseName]);
+            }
+        }).catch(err => {
+            console.log("could not insert '" + courseName + "' into the course database because: ");
+            console.log(err);
+        });
 }
 
-function addWeekDiskInformationToDatabase(courseID, weekFolderName, weekMap) {
+function addWeekDiskInformationToDatabase(courseId, weekFolderName, weekMap) {
     var parsedWeekFolderName = weekFolderName.split('_');
     var position = parsedWeekFolderName[0];
     var name = parsedWeekFolderName[1].replace(/-/g, ' ');
 
-    schema.week.build({position, name, courseID}).save()
+    schema.week.build({position, name, courseId}).save()
     .then(savedWeek => {
         for (var lectureGroupFolderName in weekMap[weekFolderName]) {
             addLectureGroupInformationToDatabase(savedWeek.id, lectureGroupFolderName, weekMap[weekFolderName]);
@@ -209,12 +238,12 @@ function addWeekDiskInformationToDatabase(courseID, weekFolderName, weekMap) {
     });
 }
 
-function addLectureGroupInformationToDatabase(weekID, lectureGroupFolderName, lectureGroupMap) {
+function addLectureGroupInformationToDatabase(weekId, lectureGroupFolderName, lectureGroupMap) {
     var parsedLectureGroupFolderName = lectureGroupFolderName.split('_');
     var position = parsedLectureGroupFolderName[0];
     var name = parsedLectureGroupFolderName[1].replace(/-/g, ' ');
 
-    schema.lectureGroup.build({position, name, weekID}).save()
+    schema.lectureGroup.build({position, name, weekId}).save()
     .then(savedLectureGroup => {
         for (var lecture in lectureGroupMap[lectureGroupFolderName]) {
             addLectureInformationToDatabase(savedLectureGroup.id, lecture, lectureGroupMap[lectureGroupFolderName]);
@@ -225,12 +254,12 @@ function addLectureGroupInformationToDatabase(weekID, lectureGroupFolderName, le
     });
 }
 
-function addLectureInformationToDatabase(lectureGroupID, lectureName, lectureMap) {
+function addLectureInformationToDatabase(lectureGroupId, lectureName, lectureMap) {
     var parsedLectureName = lectureName.split('_');
     var position = parsedLectureName[0];
     var name = parsedLectureName[1].replace(/-/g, ' ');
 
-    schema.lecture.build({position, name, lectureGroupID}).save()
+    schema.lecture.build({position, name, lectureGroupId}).save()
     .then(savedLecture => {
         lectureMap[lectureName].forEach(lectureFile => {
             addLectureFileInformationToDatabase(savedLecture.id, lectureFile);
@@ -241,7 +270,7 @@ function addLectureInformationToDatabase(lectureGroupID, lectureName, lectureMap
     });
 }
 
-function addLectureFileInformationToDatabase(lectureID, lectureFile) {
+function addLectureFileInformationToDatabase(lectureId, lectureFile) {
     var parsedLectureFileName = lectureFile.name.split('.');
     var extension = parsedLectureFileName[parsedLectureFileName.length - 1];
     var path = lectureFile.path;
@@ -250,7 +279,7 @@ function addLectureFileInformationToDatabase(lectureID, lectureFile) {
     // some of the observed extensions include:
     // ['pdf', 'xlsx', 'txt', 'mp4', 'srt', 'html', 'zip', 'md', 'git', 'cfm', 'asp', 'edu', 'php']
 
-    schema.lectureFile.build({path, extension, name, lectureID}).save()
+    schema.lectureFile.build({path, extension, name, lectureId}).save()
     .then(savedLecture => {
         // done adding data to database
     }).catch(err => {
