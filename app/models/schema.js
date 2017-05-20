@@ -5,7 +5,7 @@ var course = require('./schema/course.js'),
     playlist = require('./schema/playlist.js'),
     week = require('./schema/week.js');
 
-var tables = {course, playlist, week, lectureGroup, lecture, lectureFile};
+var tables = {playlist, course, week, lectureGroup, lecture, lectureFile};
 
 // export all the schemas
 for(var key in tables) {
