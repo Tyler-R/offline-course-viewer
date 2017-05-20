@@ -10,5 +10,7 @@ module.exports = new Sequelize(config.database, config.user, config.password, {
         idle: 10000
     },
 
+    logging: false,
+
     storage: config.sqlitePath
 });
