@@ -1,9 +1,9 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    week = require('./week.js');
+    lecture = require('./lecture.js');
 
 
-module.exports = sequelize.define('lectureGroup', {
+var lectureGroup = sequelize.define('lectureGroup', {
     id: {
         type: dataType.UUID,
         primaryKey: true,
@@ -14,15 +14,12 @@ module.exports = sequelize.define('lectureGroup', {
     },
     name: {
         type: dataType.TEXT
-    },
-    weekID: {
-        type: dataType.UUID,
-        references: {
-            model: week,
-            key: 'id'
-        }
     }
 }, {
     freezeTableName: true,
     timestamps: false,
 });
+
+lectureGroup.hasMany(lecture);
+
+module.exports = lectureGroup;

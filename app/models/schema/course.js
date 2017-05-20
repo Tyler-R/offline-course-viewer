@@ -1,12 +1,15 @@
 var sequelize = require('../sequelize.js'),
-    dataType = require('sequelize');
+    dataType = require('sequelize'),
+    week = require('./week.js');
 
-
-module.exports = sequelize.define('course', {
+var course = sequelize.define('course', {
     id: {
         type: dataType.UUID,
         primaryKey: true,
         defaultValue: dataType.UUIDV4
+    },
+    position: {
+        type: dataType.INTEGER
     },
     name: {
         type: dataType.TEXT,
@@ -16,3 +19,7 @@ module.exports = sequelize.define('course', {
     freezeTableName: true,
     timestamps: false,
 });
+
+course.hasMany(week);
+
+module.exports = course;

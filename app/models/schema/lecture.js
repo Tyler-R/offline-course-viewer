@@ -1,8 +1,8 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    lectureGroup = require('./lectureGroup.js');
+    lectureFile = require('./lectureFile.js');
 
-module.exports = sequelize.define('lecture', {
+var lecture = sequelize.define('lecture', {
     id: {
         type: dataType.UUID,
         primaryKey: true,
@@ -14,15 +14,19 @@ module.exports = sequelize.define('lecture', {
     name: {
         type: dataType.TEXT
     },
-    lectureGroupID: {
-        type: dataType.UUID,
-        references: {
-            model: lectureGroup,
-            key: 'id'
-        }
+    type: {
+        type: dataType.ENUM('video', 'reading', 'unknown'),
+        defaultValue: 'unknown'
+    },
+    completed: {
+        type: dataType.BOOLEAN,
+        defaultValue: false
     }
-
 }, {
     freezeTableName: true, // don't change database name to "lecutres" (plural)
     timestamps: false,
 });
+
+lecture.hasMany(lectureFile);
+
+module.exports = lecture;

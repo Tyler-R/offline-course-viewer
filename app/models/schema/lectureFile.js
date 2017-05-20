@@ -17,14 +17,7 @@ module.exports = sequelize.define('lectureFile', {
     },
     name: {
         type: dataType.TEXT
-    },
-    lectureID: {
-        type: dataType.UUID,
-        references: {
-            model: lecture,
-            key: 'id'
-        }
-    },
+    }
 }, {
     freezeTableName: true,
     timestamps: false,
