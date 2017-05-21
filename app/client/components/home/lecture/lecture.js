@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom'
 import style from './lecture.scss';
 
 
@@ -39,8 +40,10 @@ class Lecture extends Component {
         console.log(playIcon);
         console.log(this.state.type);
 
+        let lecturePath = "/" + this.state.courseName + "/" + this.state.weekName + "/" + this.state.lectureGroupName + "/" + this.state.name
+
         return (
-            <span>
+            <Link to={lecturePath}>
                 <li className="collection-item" onClick={(e) => this.handleClick(e)}>
                     <div>
                         <i className="material-icons lecture-icon">
@@ -54,7 +57,7 @@ class Lecture extends Component {
 
                     </div>
                 </li>
-            </span>
+            </Link>
         );
     }
 
