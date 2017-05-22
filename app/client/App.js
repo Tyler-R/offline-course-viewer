@@ -16,7 +16,7 @@ class App extends Component {
             <Router>
                 <div>
                     <Route exact={true} path='/' component={Home}/>
-                    <Route path="/:course/:week/:module/:lecture" component={LecturePage}/>
+                    <Route path="/:course/:week/:lectureGroup/:lecture" component={LecturePage}/>
 
                 </div>
 

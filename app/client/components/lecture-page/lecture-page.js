@@ -12,7 +12,7 @@ class LecturePage extends Component {
         this.state = {
             courseName: params.course,
             weekName: params.week,
-            moduleName: params.module,
+            lectureGroupName: params.lectureGroup,
             lectureName: params.lecture,
         }
     }
