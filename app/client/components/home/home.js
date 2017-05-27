@@ -55,10 +55,9 @@ class Home extends Component {
     render() {
         let courses = [];
 
-        for(let i = 0; i < this.state.courses.length; i++) {
-            let course = this.state.courses[i];
-            courses.push(<Course key={course} id={i} name={course}></Course>);
-        }
+        this.state.courses.forEach(course => {
+            courses.push(<Course key={course.id} id={course.id} name={course.name}></Course>);
+        });
 
         return (
             <div>
