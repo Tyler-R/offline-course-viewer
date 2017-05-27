@@ -9,13 +9,12 @@ class Lecture extends Component {
         super(props);
 
         this.state = {
+            id: props.id,
             name: props.name,
             position: props.position,
+            parent: props.parent,
             type: props.type,
             completed: props.completed,
-            courseName: props.courseName,
-            weekName: props.weekName,
-            lectureGroupName: props.lectureGroupName,
             collapsed: true,
         }
     }
@@ -37,10 +36,13 @@ class Lecture extends Component {
             playIcon = readingPlayIcon;
         }
 
-        console.log(playIcon);
-        console.log(this.state.type);
+        console.log(this.state.parent);
 
-        let lecturePath = "/" + this.state.courseName + "/" + this.state.weekName + "/" + this.state.lectureGroupName + "/" + this.state.name
+        let weekId = this.state.parent.state.parent.state.id;
+        let courseName = this.state.parent.state.parent.state.parent.state.name;
+
+        // .replace(/\s+/g, '-') will replace 1 or more white spaces with a '-'
+        let lecturePath = "/" + courseName.replace(/\s+/g, '-') + "/" + weekId + "/lecture/" + this.state.id + "/" + this.state.name.replace(/\s+/g, '-');
 
         return (
             <Link to={lecturePath}>
@@ -53,8 +55,6 @@ class Lecture extends Component {
                         <span className="lecture-title">
                             {this.state.name}
                         </span>
-
-
                     </div>
                 </li>
             </Link>
