@@ -8,20 +8,27 @@
 }
 
 .course-name {
+    display: table-cell;
+    vertical-align: top;
+    margin-left: left;
     font-size: 24px;
+    width: 90%;
 }
 
 .course-dropdown-icon {
-    padding-top: 5px;
-    padding-right: 5px;
+    display: table-cell;
+    vertical-align: middle;
+    width: 5%;
+}
+
+.course-settings-icon {
+    display: table-cell;
+    vertical-align: middle;
+    width: 5%;
 }
 
 .bottom-button {
     margin-bottom: 8pt;
-}
-
-.dropdown-icon {
-
 }
 
 .dropdown {

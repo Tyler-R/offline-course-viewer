@@ -20,7 +20,7 @@ class Course extends Component {
             let self = this;
             axios.get('/weeks', {
                 params: {
-                    courseName: this.state.name
+                    courseId: this.state.id
                 }
             })
             .then(weeks => {
@@ -39,7 +39,7 @@ class Course extends Component {
         let weeks = [];
         if (this.state.weeks && !this.state.collapsed) {
             weeks = this.state.weeks.map(week => {
-                return <Week key={week.name} name={week.name} position={week.position} courseName={this.state.name}></Week>;
+                return <Week key={week.id} id={week.id} name={week.name} parent={this} position={week.position}></Week>;
             });
         }
 
@@ -51,25 +51,29 @@ class Course extends Component {
                 <div className='col s6 offset-s3'>
                     <ul className="collection with-header">
                         <li className="course-container collection-header" onClick={(e) => this.handleClick(e)}>
-                            <div>
-                                <i className="material-icons course-dropdown-icon">
-                                    {collapseIconName}
-                                </i>
-                                <span className="course-name">
-                                    {this.state.name}
-                                </span>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td className="material-icons course-dropdown-icon">
+                                            {collapseIconName}
+                                        </td>
+                                        <td className="course-name">
+                                            {this.state.name}
+                                        </td>
 
-                                <div className="dropdown right collapse-disabled">
-                                    <i className="material-icons black-text dropdown-icon">
-                                        settings
-                                    </i>
+                                        <td className="dropdown right collapse-disabled">
+                                            <i className="material-icons black-text dropdown-icon course-settings-icon">
+                                                settings
+                                            </i>
 
-                                    <ul id={this.state.id} className="dropdown-list">
-                                        <li><a href="#!">edit name</a></li>
-                                        <li><a href='#!'>move</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                                            <ul id={this.state.id} className="dropdown-list">
+                                                <li><a href="#!">edit name</a></li>
+                                                <li><a href='#!'>move</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
                             <a href="#" className="btn right bottom-button collapse-disabled">Go to Course</a>
 
