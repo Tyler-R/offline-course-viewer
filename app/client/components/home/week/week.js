@@ -10,9 +10,10 @@ class Week extends Component {
         super(props);
 
         this.state = {
+            id: props.id,
             name: props.name,
             position: props.position,
-            courseName: props.courseName,
+            parent: props.parent,
             lectureGroups: [],
             collapsed: true,
         }
@@ -20,15 +21,13 @@ class Week extends Component {
 
     handleClick(event) {
         if(this.state.collapsed) {
-            let self = this;
             axios.get('/lectureGroups', {
                 params: {
-                    courseName: this.state.courseName,
-                    weekName: this.state.name,
+                    weekId: this.state.id
                 }
             })
             .then(lectureGroups => {
-                self.setState({
+                this.setState({
                     lectureGroups: lectureGroups.data,
                 });
             });
@@ -44,7 +43,15 @@ class Week extends Component {
 
         if(this.state.lectureGroups && !this.state.collapsed) {
             lectureGroups = this.state.lectureGroups.map(lectureGroup => {
-                return <LectureGroup key={lectureGroup.name} name={lectureGroup.name} position={lectureGroup.position} courseName={this.state.courseName} weekName={this.state.name}></LectureGroup>;
+                return (
+                    <LectureGroup
+                        key={lectureGroup.id}
+                        id={lectureGroup.id}
+                        name={lectureGroup.name}
+                        position={lectureGroup.position}
+                        parent={this}>
+                    </LectureGroup>
+                );
             });
         }
 
