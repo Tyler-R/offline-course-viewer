@@ -205,21 +205,20 @@ function getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders, week
 
 function addCourseDiskInformationToDatabase(courseName, playlistId, position, courseMap) {
     var name = courseName.replace(/-/g, ' ');
-    var name = courseName;
 
-        schema.course.build({
-            name,
-            position,
-            playlistId
-        }).save()
-        .then(savedCourse => {
-            for (var weekFolderName in courseMap[courseName]) {
-                addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, courseMap[courseName]);
-            }
-        }).catch(err => {
-            console.log("could not insert '" + courseName + "' into the course database because: ");
-            console.log(err);
-        });
+    schema.course.build({
+        name,
+        position,
+        playlistId
+    }).save()
+    .then(savedCourse => {
+        for (var weekFolderName in courseMap[courseName]) {
+            addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, courseMap[courseName]);
+        }
+    }).catch(err => {
+        console.log("could not insert '" + courseName + "' into the course database because: ");
+        console.log(err);
+    });
 }
 
 function addWeekDiskInformationToDatabase(courseId, weekFolderName, weekMap) {
