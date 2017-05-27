@@ -10,17 +10,18 @@ class LecturePage extends Component {
         let params = props.match.params;
 
         this.state = {
-            courseName: params.course,
-            weekName: params.week,
-            lectureGroupName: params.lectureGroup,
-            lectureName: params.lecture,
+            courseName: params.courseName,
+            weekId: params.weekId,
+            lectureId: params.lectureId,
+            lectureName: params.lectureName,
         }
     }
 
     render() {
         return (
             <span>
-                <Sidebar courseName={this.state.courseName} weekName={this.state.weekName} />
+                <Sidebar key={this.state.weekId} weekId={this.state.weekId}/>
+
             </span>
         );
     }
