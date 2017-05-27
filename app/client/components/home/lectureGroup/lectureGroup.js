@@ -10,10 +10,10 @@ class LectureGroup extends Component {
         super(props);
 
         this.state = {
+            id: props.id,
             name: props.name,
             position: props.position,
-            courseName: props.courseName,
-            weekName: props.weekName,
+            parent: props.parent,
             lectures: [],
             collapsed: true,
         }
@@ -23,9 +23,7 @@ class LectureGroup extends Component {
         if(this.state.collapsed) {
             axios.get('/lectures', {
                 params: {
-                    courseName: this.state.courseName,
-                    weekName: this.state.weekName,
-                    lectureGroupName: this.state.name,
+                    lectureGroupId: this.state.id
                 }
             })
             .then(lectures => {
@@ -48,14 +46,13 @@ class LectureGroup extends Component {
             lectures = this.state.lectures.map(lecture => {
                 return (
                     <Lecture
-                        key={lecture.name}
+                        key={lecture.id}
+                        id={lecture.id}
                         name={lecture.name}
+                        parent={this}
                         position={lecture.position}
                         type={lecture.type}
-                        completed={lecture.completed}
-                        courseName={this.state.courseName}
-                        weekName={this.state.weekName}
-                        lectureGroupName={this.state.name}>
+                        completed={lecture.completed}>
                     </Lecture>
                 );
             });
