@@ -9,6 +9,7 @@ class Sidebar extends Component {
 
         this.state = {
             weekId: props.weekId,
+            courseName: props.courseName,
             lectureGroups: []
         }
     }
@@ -39,7 +40,9 @@ class Sidebar extends Component {
                         key={lectureGroup.id}
                         id={lectureGroup.id}
                         name={lectureGroup.name}
-                        position={lectureGroup.position}>
+                        position={lectureGroup.position}
+                        weekId={this.state.weekId}
+                        courseName={this.state.courseName}>
                     </SidebarLectureGroup>
                 );
             });
