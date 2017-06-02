@@ -16,10 +16,8 @@ class App extends Component {
             <Router>
                 <div>
                     <Route exact={true} path='/' component={Home}/>
-                    <Route path="/:courseName/:weekId/lecture/:lectureId/:lectureName" component={LecturePage}/>
-
+                    <Route path="/:courseName/:weekId/lecture/:lectureType/:lectureId/:lectureName" component={LecturePage}/>
                 </div>
-
             </Router>
         );
     }
