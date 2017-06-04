@@ -36,13 +36,11 @@ class Lecture extends Component {
             playIcon = readingPlayIcon;
         }
 
-        console.log(this.state.parent);
-
         let weekId = this.state.parent.state.parent.state.id;
         let courseName = this.state.parent.state.parent.state.parent.state.name;
 
         // .replace(/\s+/g, '-') will replace 1 or more white spaces with a '-'
-        let lecturePath = "/" + courseName.replace(/\s+/g, '-') + "/" + weekId + "/lecture/" + this.state.id + "/" + this.state.name.replace(/\s+/g, '-');
+        let lecturePath = "/" + courseName.replace(/\s+/g, '-') + "/" + weekId + "/lecture/" + this.state.type + "/" + this.state.id + "/" + this.state.name.replace(/\s+/g, '-');
 
         return (
             <Link to={lecturePath}>
