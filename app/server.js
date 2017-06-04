@@ -94,7 +94,24 @@ app.get('/lectures', (req, res) => {
 
         res.send(response);
     });
+});
 
+app.get('/stream', (req, res) => {
+    let lectureId = req.query.lectureId;
+
+    schema.lectureFile.find({
+        attributes: ['path'],
+        where: {
+            lectureId,
+            extension: 'mp4'
+        }
+    }).then(lectureFile => {
+        res.sendFile(lectureFile.path, err => {
+            if(err) {
+                console.log(err);
+            }
+        });
+    });
 });
 
 
