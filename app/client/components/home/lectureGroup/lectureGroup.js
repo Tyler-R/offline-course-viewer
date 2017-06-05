@@ -42,7 +42,6 @@ class LectureGroup extends Component {
         let lectures = [];
 
         if(this.state.lectures && !this.state.collapsed) {
-            console.log(this.state.lectures);
             lectures = this.state.lectures.map(lecture => {
                 return (
                     <Lecture
