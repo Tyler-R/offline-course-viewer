@@ -1,6 +1,14 @@
+$sidebar-width: 300px;
 
-.video-lecture-content {
-    padding-left: 300px;
+.video-lecture-container {
+    padding-left: $sidebar-width;
+    padding-bottom: 80px;
+    padding-top: 80px;
+    background-color: black;
     display: block;
     margin: 0 auto;
+}
+
+.video-lecture-content {
+    padding-left: 20%;
 }

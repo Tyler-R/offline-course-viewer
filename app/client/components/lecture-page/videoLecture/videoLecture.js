@@ -19,14 +19,18 @@ class VideoLecture extends Component {
         console.log('video loading from: ' + this.state.id);
 
         return (
-            <div className="video-lecture-content">
-                <video
-                    id="my-player"
-                    className="video-js"
-                    controls
-                    preload="auto">
-                    <source src={this.state.videoPath} type="video/mp4"></source>
-                </video>
+            <div className="video-lecture-container">
+                <div className="video-lecture-content">
+                    <video
+                        id="my-player"
+                        className="video-js"
+                        width="80%"
+                        height="100%"
+                        controls
+                        preload="auto">
+                        <source src={this.state.videoPath} type="video/mp4"></source>
+                    </video>
+                </div>
             </div>
         );
     }
