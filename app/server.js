@@ -11,10 +11,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/courses', (req, res) => {
-    schema.course.findAll({attributes: ['name']}).then(courses => {
+    schema.course.findAll({attributes: ['id', 'name']}).then(courses => {
         var response = []
         courses.forEach(course => {
-            response.push(course.name);
+            response.push({
+                id: course.id,
+                name: course.name
+            });
         });
         res.send(response);
     });
@@ -22,117 +25,93 @@ app.get('/courses', (req, res) => {
 
 
 app.get('/weeks', (req, res) => {
-    let courseName = req.query.courseName;
+    let courseId = req.query.courseId;
 
-    schema.course.find({
-        attributes: ["id"],
+    schema.week.findAll({
+        attributes: ["id", "position", "name"],
         where: {
-            name: courseName
-        }
-    }).then(course => {
-        schema.week.findAll({
-            attributes: ["position", "name"],
-            where: {
-                courseId: course.id
-            }
-        }).then(weeks => {
-            let response = [];
-            weeks.forEach(week => {
-                response.push({
-                    position: week.position,
-                    name: week.name
-                });
+            courseId
+        },
+        order: "position"
+    }).then(weeks => {
+        let response = [];
+        weeks.forEach(week => {
+            response.push({
+                id: week.id,
+                position: week.position,
+                name: week.name
             });
+        });
 
-            res.send(response);
-        })
+        res.send(response);
     })
 });
 
 app.get('/lectureGroups', (req, res) => {
-    let courseName = req.query.courseName;
-    let weekName = req.query.weekName;
+    let weekId = req.query.weekId;
 
-    schema.course.find({
-        attributes: ["id"],
+    schema.lectureGroup.findAll({
+        attributes: ["id", "position", "name"],
         where: {
-            name: courseName
-        }
-    }).then(course => {
-        schema.week.find({
-            attributes: ["id"],
-            where: {
-                courseId: course.id,
-                name: weekName,
-            }
-        }).then(week => {
-            schema.lectureGroup.findAll({
-                attributes: ["position", "name"],
-                where: {
-                    weekId: week.id,
-                }
-            }).then(lectureGroups => {
-                let response = [];
-                lectureGroups.forEach(lectureGroup => {
-                    response.push({
-                        name: lectureGroup.name,
-                        position: lectureGroup.position,
-                    });
-                });
-
-                res.send(response);
+            weekId
+        },
+        order: "position"
+    }).then(lectureGroups => {
+        let response = [];
+        lectureGroups.forEach(lectureGroup => {
+            response.push({
+                id: lectureGroup.id,
+                name: lectureGroup.name,
+                position: lectureGroup.position,
             });
-        })
-    })
+        });
+
+        res.send(response);
+    });
 });
 
 app.get('/lectures', (req, res) => {
-    let courseName = req.query.courseName;
-    let weekName = req.query.weekName;
-    let lectureGroupName = req.query.lectureGroupName;
-    console.log(courseName + "   " + weekName + "   " + lectureGroupName);
+    let lectureGroupId = req.query.lectureGroupId;
 
-    schema.course.find({
-        attributes: ["id"],
+
+    schema.lecture.findAll({
+        attributes: ["id", "position", "name", "type", "completed"],
         where: {
-            name: courseName
-        }
-    }).then(course => {
-        schema.week.find({
-            attributes: ["id"],
-            where: {
-                courseId: course.id,
-                name: weekName,
-            }
-        }).then(week => {
-            schema.lectureGroup.find({
-                attributes: ["id"],
-                where: {
-                    weekId: week.id,
-                    name: lectureGroupName,
-                }
-            }).then(lectureGroup => {
-                schema.lecture.findAll({
-                    attributes: ["position", "name", "type", "completed"],
-                    where: {
-                        lectureGroupId: lectureGroup.id
-                    }
-                }).then(lectures => {
-                    let response = [];
-                    lectures.forEach(lecture => {
-                        response.push({
-                            name: lecture.name,
-                            position: lecture.position,
-                            type: lecture.type,
-                            completed: lecture.completed,
-                        });
-                    });
-
-                    res.send(response);
-                })
+            lectureGroupId
+        },
+        order: "position"
+    }).then(lectures => {
+        let response = [];
+        lectures.forEach(lecture => {
+            response.push({
+                id: lecture.id,
+                name: lecture.name,
+                position: lecture.position,
+                type: lecture.type,
+                completed: lecture.completed,
             });
-        })
-    })
+        });
+
+        res.send(response);
+    });
+});
+
+app.get('/stream', (req, res) => {
+    let lectureId = req.query.lectureId;
+
+    schema.lectureFile.find({
+        attributes: ['path'],
+        where: {
+            lectureId,
+            extension: 'mp4'
+        }
+    }).then(lectureFile => {
+        res.sendFile(lectureFile.path, err => {
+            if(err) {
+                console.log(err);
+            }
+        });
+    });
 });
 
 

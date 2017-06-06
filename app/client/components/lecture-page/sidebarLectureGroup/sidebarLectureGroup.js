@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Lecture from '../lecture/lecture.js'
-import style from './lectureGroup.scss';
 import axios from 'axios';
 
+import SidebarLecture from '../sidebarLecture/sidebarLecture.js'
+import style from './sidebarLectureGroup.scss';
 
-class LectureGroup extends Component {
+class SidebarLectureGroup extends Component {
     constructor(props) {
         super(props);
 
@@ -13,7 +13,8 @@ class LectureGroup extends Component {
             id: props.id,
             name: props.name,
             position: props.position,
-            parent: props.parent,
+            weekId: props.weekId,
+            courseName: props.courseName,
             lectures: [],
             collapsed: true,
         }
@@ -39,20 +40,21 @@ class LectureGroup extends Component {
     }
 
     render() {
-        let lectures = [];
+        let sidebarLectures = [];
 
         if(this.state.lectures && !this.state.collapsed) {
-            lectures = this.state.lectures.map(lecture => {
+            sidebarLectures = this.state.lectures.map(lecture => {
                 return (
-                    <Lecture
+                    <SidebarLecture
                         key={lecture.id}
                         id={lecture.id}
                         name={lecture.name}
-                        parent={this}
                         position={lecture.position}
                         type={lecture.type}
-                        completed={lecture.completed}>
-                    </Lecture>
+                        completed={lecture.completed}
+                        weekId={this.state.weekId}
+                        courseName={this.state.courseName}
+                    />
                 );
             });
         }
@@ -74,9 +76,9 @@ class LectureGroup extends Component {
                     </div>
                 </li>
 
-                {lectures.length > 0 &&
+                {sidebarLectures.length > 0 &&
                     <ul className="collection">
-                        {lectures}
+                        {sidebarLectures}
                     </ul>
                 }
 
@@ -87,4 +89,4 @@ class LectureGroup extends Component {
 
 }
 
-export default LectureGroup;
+export default SidebarLectureGroup;

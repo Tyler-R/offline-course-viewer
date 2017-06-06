@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom'
-import style from './lecture.scss';
+import style from './sidebarLecture.scss';
 
 
-class Lecture extends Component {
+class SidebarLecture extends Component {
     constructor(props) {
         super(props);
 
@@ -12,9 +12,10 @@ class Lecture extends Component {
             id: props.id,
             name: props.name,
             position: props.position,
-            parent: props.parent,
             type: props.type,
             completed: props.completed,
+            weekId: props.weekId,
+            courseName: props.courseName,
             collapsed: true,
         }
     }
@@ -36,11 +37,8 @@ class Lecture extends Component {
             playIcon = readingPlayIcon;
         }
 
-        let weekId = this.state.parent.state.parent.state.id;
-        let courseName = this.state.parent.state.parent.state.parent.state.name;
-
         // .replace(/\s+/g, '-') will replace 1 or more white spaces with a '-'
-        let lecturePath = "/" + courseName.replace(/\s+/g, '-') + "/" + weekId + "/lecture/" + this.state.type + "/" + this.state.id + "/" + this.state.name.replace(/\s+/g, '-');
+        let lecturePath = "/" + this.state.courseName.replace(/\s+/g, '-') + "/" + this.state.weekId + "/lecture/" + this.state.type + "/" + this.state.id + "/" + this.state.name.replace(/\s+/g, '-');
 
         return (
             <Link to={lecturePath}>
@@ -61,4 +59,4 @@ class Lecture extends Component {
 
 }
 
-export default Lecture;
+export default SidebarLecture;

@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import LectureGroup from '../../home/lectureGroup/lectureGroup.js'
+import SidebarLectureGroup from '../sidebarLectureGroup/sidebarLectureGroup.js'
 
 class Sidebar extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            weekId: props.weekId,
             courseName: props.courseName,
-            weekName: props.weekName,
             lectureGroups: []
         }
     }
@@ -18,8 +18,7 @@ class Sidebar extends Component {
         if(this.state.lectureGroups.length < 1) {
             axios.get('/lectureGroups', {
                 params: {
-                    courseName: this.state.courseName,
-                    weekName: this.state.weekName,
+                    weekId: this.state.weekId,
                 }
             })
             .then(lectureGroups => {
@@ -32,18 +31,19 @@ class Sidebar extends Component {
 
 
     render() {
-        let lectureGroups = [];
+        let sidebarlectureGroups = [];
 
         if(this.state.lectureGroups) {
-            lectureGroups = this.state.lectureGroups.map(lectureGroup => {
+            sidebarlectureGroups = this.state.lectureGroups.map(lectureGroup => {
                 return (
-                    <LectureGroup
-                        key={lectureGroup.name}
+                    <SidebarLectureGroup
+                        key={lectureGroup.id}
+                        id={lectureGroup.id}
                         name={lectureGroup.name}
                         position={lectureGroup.position}
-                        courseName={this.state.courseName}
-                        weekName={this.state.weekName}>
-                    </LectureGroup>
+                        weekId={this.state.weekId}
+                        courseName={this.state.courseName}>
+                    </SidebarLectureGroup>
                 );
             });
         }
@@ -51,7 +51,7 @@ class Sidebar extends Component {
         return (
             <div>
                 <ul className="side-nav fixed">
-                    {lectureGroups}
+                    {sidebarlectureGroups}
                 </ul>
             </div>
         );
