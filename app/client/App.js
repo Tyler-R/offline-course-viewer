@@ -8,7 +8,7 @@ import {
 import axios from 'axios';
 
 import Home from './components/home/home.js';
-import LecturePage from './components/lecture-page/lecture-page.js';
+import LecturePage from './components/lecture-page/lecturePage.js';
 
 class App extends Component {
     render() {
