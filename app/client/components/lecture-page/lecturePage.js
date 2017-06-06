@@ -11,8 +11,7 @@ import style from './lecturePage.scss';
 class LecturePage extends Component {
     constructor(props) {
         super(props);
-        let params = props.match.params;
-        console.log(params);
+        let {params} = props.match;
 
         this.state = {
             courseName: params.courseName,
@@ -21,6 +20,18 @@ class LecturePage extends Component {
             lectureName: params.lectureName,
             lectureType: params.lectureType
         }
+    }
+
+    componentWillReceiveProps(props) {
+        let {params} = props.match;
+
+        this.setState({
+            courseName: params.courseName,
+            weekId: params.weekId,
+            lectureId: params.lectureId,
+            lectureName: params.lectureName,
+            lectureType: params.lectureType,
+        })
     }
 
     render() {
