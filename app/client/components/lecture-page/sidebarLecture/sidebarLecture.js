@@ -38,7 +38,7 @@ class SidebarLecture extends Component {
         }
 
         // .replace(/\s+/g, '-') will replace 1 or more white spaces with a '-'
-        let lecturePath = "/" + this.state.courseName.replace(/\s+/g, '-') + "/" + this.state.weekId + "/lecture/" + this.state.id + "/" + this.state.name.replace(/\s+/g, '-');
+        let lecturePath = "/" + this.state.courseName.replace(/\s+/g, '-') + "/" + this.state.weekId + "/lecture/" + this.state.type + "/" + this.state.id + "/" + this.state.name.replace(/\s+/g, '-');
 
         return (
             <Link to={lecturePath}>
