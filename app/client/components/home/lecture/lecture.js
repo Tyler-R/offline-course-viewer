@@ -28,6 +28,7 @@ class Lecture extends Component {
     render() {
         let videoPlayIcon = this.state.completed ? "play_circle_filled" : "play_circle_outline";
         let readingPlayIcon = "chrome_reader_mode";
+        let iconColor = this.state.completed ? {color: "green"} : {color : "grey"};
 
         let playIcon = '';
         if(this.state.type === 'video') {
@@ -46,7 +47,7 @@ class Lecture extends Component {
             <Link to={lecturePath}>
                 <li className="collection-item" onClick={(e) => this.handleClick(e)}>
                     <div>
-                        <i className="material-icons lecture-icon">
+                        <i className="material-icons lecture-icon" style={iconColor}>
                             {playIcon}
                         </i>
 
