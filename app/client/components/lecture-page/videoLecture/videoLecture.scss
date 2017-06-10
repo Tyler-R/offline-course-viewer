@@ -1,12 +1,10 @@
-$sidebar-width: 300px;
+@import "../sidebarLectureGroup/sidebarLectureGroup";
 
 .video-lecture-container {
-    padding-left: $sidebar-width;
     padding-bottom: 80px;
     padding-top: 80px;
     background-color: black;
-    display: block;
-    margin: 0 auto;
+    margin: 0 auto 0 $sidebar-width;
 }
 
 .video-lecture-content {

@@ -64,17 +64,20 @@ class SidebarLectureGroup extends Component {
 
         return (
             <span>
-                <li className="collection-item" onClick={(e) => this.handleClick(e)}>
+
+                <li className="sidebar-lecture-group" onClick={(e) => this.handleClick(e)}>
                     <div>
-                        <span>
+                        <span className="sidebar-lecture-group-title">
                             {this.state.name}
                         </span>
 
-                        <i className="material-icons right">
+                        <i className="material-icons sidebar-lecture-group-icon">
                             {collapseIconName}
                         </i>
                     </div>
                 </li>
+
+
 
                 {sidebarLectures.length > 0 &&
                     <ul className="collection">

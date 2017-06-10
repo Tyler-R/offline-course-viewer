@@ -1,0 +1,27 @@
+$sidebar-width: 300px;
+$icon-side: 24px;
+$horizontal-padding: 16px;
+
+.sidebar-lecture-group-icon {
+    display: table-cell;
+    vertical-align: middle;
+    float: right;
+}
+
+.sidebar-lecture-group-title {
+    font-size: 14px;
+    display: table-cell;
+    vertical-align: top;
+    float: left;
+    width: $sidebar-width - $horizontal-padding - $horizontal-padding - $icon-side;
+    font-weight: bold;
+}
+
+.sidebar-lecture-group {
+    display: block;
+    padding: 8px $horizontal-padding 8px $horizontal-padding;
+    text-decoration: none;
+    transition: 0.3s;
+    overflow: auto;
+    position: relative;
+}

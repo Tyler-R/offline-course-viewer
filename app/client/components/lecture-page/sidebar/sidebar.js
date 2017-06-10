@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import SidebarLectureGroup from '../sidebarLectureGroup/sidebarLectureGroup.js'
 
+import style from './sidebar.scss';
+
 class Sidebar extends Component {
     constructor(props) {
         super(props);
@@ -49,10 +51,8 @@ class Sidebar extends Component {
         }
 
         return (
-            <div>
-                <ul className="side-nav fixed">
-                    {sidebarlectureGroups}
-                </ul>
+            <div className="sidebar-nav">
+                {sidebarlectureGroups}
             </div>
         );
     }
