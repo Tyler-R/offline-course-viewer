@@ -16,19 +16,13 @@ class SidebarLecture extends Component {
             completed: props.completed,
             weekId: props.weekId,
             courseName: props.courseName,
-            collapsed: true,
         }
-    }
-
-    handleClick(event) {
-        this.setState({
-            collapsed: !this.state.collapsed,
-        });
     }
 
     render() {
         let videoPlayIcon = this.state.completed ? "play_circle_filled" : "play_circle_outline";
         let readingPlayIcon = "chrome_reader_mode";
+        let iconColor = this.state.completed ? {color: "green"} : {color : "grey"};
 
         let playIcon = '';
         if(this.state.type === 'video') {
@@ -42,9 +36,9 @@ class SidebarLecture extends Component {
 
         return (
             <Link to={lecturePath}>
-                <li className="collection-item" onClick={(e) => this.handleClick(e)}>
+                <li className="collection-item">
                     <div>
-                        <i className="material-icons lecture-icon">
+                        <i className="material-icons lecture-icon" style={iconColor}>
                             {playIcon}
                         </i>
 
