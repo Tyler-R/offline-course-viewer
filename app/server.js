@@ -114,6 +114,21 @@ app.get('/stream', (req, res) => {
     });
 });
 
+app.put('/lecture/complete/:lectureId', (req, res) => {
+    let lectureId = req.body.params.lectureId;
+
+    schema.lecture.update(
+        {completed: true},
+        {
+            where: {
+                id: lectureId
+            }
+        }
+    ).catch(err => {
+        console.log("ERROR in /lecture/complete/:lectureId: " + JSON.stringify(err));
+    });
+});
+
 
 schema.syncAll().then(() => {
     app.listen(port, () => {
