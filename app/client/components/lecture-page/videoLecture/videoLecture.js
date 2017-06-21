@@ -15,19 +15,39 @@ class VideoLecture extends Component {
         }
     }
 
-    render() {
-        console.log('video loading from: ' + this.state.id);
+    handleVideoTimeProgressing() {
+        let currentTime = this.videoPlayer.currentTime;
 
+        if(currentTime / this.state.duration >= 0.9 && !this.state.completionMessageSent) {
+            axios.put('/lecture/complete/:lectureId', {
+                params: {
+                    lectureId: this.state.id
+                }
+            }).then(result => {
+                // lecture video is completed
+            });
+        }
+    }
+
+    setVideoDuration() {
+        this.setState({
+            duration: this.videoPlayer.duration
+        });
+    }
+
+    render() {
         return (
             <div className="video-lecture-container">
                 <div className="video-lecture-content">
                     <video
-                        id="my-player"
-                        className="video-js"
                         width="80%"
                         height="100%"
+                        autoPlay
                         controls
-                        preload="auto">
+                        preload="auto"
+                        ref={(ref) => this.videoPlayer = ref}
+                        onCanPlay={() => {this.setVideoDuration()}}
+                        onTimeUpdate={()=>{this.handleVideoTimeProgressing()}}>
                         <source src={this.state.videoPath} type="video/mp4"></source>
                     </video>
                 </div>
