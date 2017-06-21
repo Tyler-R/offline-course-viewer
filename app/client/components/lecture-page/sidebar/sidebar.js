@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import SidebarLectureGroup from '../sidebarLectureGroup/sidebarLectureGroup.js'
+// import SidebarLectureGroup from '../sidebarLectureGroup/sidebarLectureGroup.js';
+import SidebarLectureGroup from '../../../containers/lecturePage/sidebarLectureGroup.js';
 
 import style from './sidebar.scss';
 
@@ -12,7 +13,17 @@ class Sidebar extends Component {
         this.state = {
             weekId: props.weekId,
             courseName: props.courseName,
-            lectureGroups: []
+            onLectureGroupsReceived: props.onLectureGroupsReceived,
+            lectureGroups: props.lectureGroups,
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        this.state = {
+            weekId: props.weekId,
+            courseName: props.courseName,
+            onLectureGroupsReceived: props.onLectureGroupsReceived,
+            lectureGroups: props.lectureGroups,
         }
     }
 
@@ -24,13 +35,10 @@ class Sidebar extends Component {
                 }
             })
             .then(lectureGroups => {
-                this.setState({
-                    lectureGroups: lectureGroups.data,
-                });
+                this.state.onLectureGroupsReceived(lectureGroups.data);
             });
         }
     }
-
 
     render() {
         let sidebarlectureGroups = [];
@@ -44,8 +52,8 @@ class Sidebar extends Component {
                         name={lectureGroup.name}
                         position={lectureGroup.position}
                         weekId={this.state.weekId}
-                        courseName={this.state.courseName}>
-                    </SidebarLectureGroup>
+                        courseName={this.state.courseName}
+                    />
                 );
             });
         }

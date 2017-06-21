@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import Sidebar from './sidebar/sidebar.js';
+import Sidebar from '../../containers/lecturePage/sidebar.js';
 import VideoLecture from './VideoLecture/VideoLecture.js';
 import ReadingLecture from './readingLecture/readingLecture.js';
 
@@ -53,7 +53,11 @@ class LecturePage extends Component {
 
         return (
             <span>
-                <Sidebar key={this.state.weekId} weekId={this.state.weekId} courseName={this.state.courseName}/>
+                <Sidebar
+                    key={this.state.weekId}
+                    weekId={this.state.weekId}
+                    courseName={this.state.courseName}
+                />
                 {lecture}
             </span>
         );

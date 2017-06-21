@@ -2,21 +2,32 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import SidebarLecture from '../sidebarLecture/sidebarLecture.js'
+import SidebarLecture from '../sidebarLecture/sidebarLecture.js';
+
 import style from './sidebarLectureGroup.scss';
 
 class SidebarLectureGroup extends Component {
     constructor(props) {
         super(props);
 
+        this.initializeState(props);
+    }
+
+    componentWillReceiveProps(props) {
+        this.initializeState(props);
+    }
+
+    initializeState(props) {
         this.state = {
             id: props.id,
             name: props.name,
             position: props.position,
             weekId: props.weekId,
             courseName: props.courseName,
-            lectures: [],
-            collapsed: true,
+            onLecturesReceived: props.onLecturesReceived,
+            toggleCollapsed: props.toggleCollapsed,
+            lectures: props.lectures,
+            collapsed: props.collapsed,
         }
     }
 
@@ -28,15 +39,10 @@ class SidebarLectureGroup extends Component {
                 }
             })
             .then(lectures => {
-                this.setState({
-                    lectures: lectures.data,
-                });
+                this.state.onLecturesReceived(lectures.data);
             });
         }
-
-        this.setState({
-            collapsed: !this.state.collapsed,
-        });
+        this.state.toggleCollapsed(this.state.collapsed);
     }
 
     render() {
@@ -89,7 +95,7 @@ class SidebarLectureGroup extends Component {
             </span>
         );
     }
-
 }
+
 
 export default SidebarLectureGroup;
