@@ -2,21 +2,37 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import Course from './course/course.js'
+import Course from './course/course.js';
+import Navbar from './navbar/navbar.js';
+import PlaylistSidebar from './playlistSidebar/playlistSidebar.js';
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            courses: []
+            courses: [],
+            playlists: [],
         }
     }
 
     componentDidMount() {
-        axios.get('/courses')
-            .then(res => {
-                const courses = res.data
-                this.setState({courses});
+        axios.get('/playlists')
+        .then(playlistResponse => {
+            const playlists = playlistResponse.data.playlists
+            let selectedPlaylistId = playlistResponse.data.defaultPlaylistId
+
+            axios.get('courses', {
+                params: {
+                    playlistId: selectedPlaylistId
+                }
+            }).then((coursesResponse) => {
+
+                const courses = coursesResponse.data;
+                this.setState({
+                    playlists,
+                    courses
+                });
+
 
                 $(document).ready(() => {
                     // stops button and icons from expanding and collapsing the collapsible section
@@ -47,20 +63,25 @@ class Home extends Component {
                             }
                         }
                     }
-
                 });
             });
+        });
     }
 
     render() {
         let courses = [];
 
         this.state.courses.forEach(course => {
-            courses.push(<Course key={course.id} id={course.id} name={course.name}></Course>);
+            courses.push(<Course key={course.id} id={course.id} name={course.name} />);
         });
+
+        console.log("rendering");
+        console.log(this.state);
 
         return (
             <div>
+                <Navbar />
+                <PlaylistSidebar playlists={this.state.playlists}/>
                 {courses}
             </div>
         );
