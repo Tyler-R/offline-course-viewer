@@ -10,8 +10,39 @@ app.use('/', express.static(path.resolve(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get('/playlists', (req, res) => {
+    schema.playlist.findAll({
+        attributes: ['id', 'position', 'name', 'isDefault']
+    }).then(playlists => {
+        let response = {
+            playlists: [],
+            defaultPlaylistId: undefined,
+        }
+        playlists.forEach(playlist => {
+            response.playlists.push({
+                id: playlist.id,
+                position: playlist.position,
+                name: playlist.name,
+            });
+
+            if(playlist.isDefault) {
+                response.defaultPlaylistId = playlist.id;
+            }
+        });
+
+        res.send(response);
+    })
+})
+
 app.get('/courses', (req, res) => {
-    schema.course.findAll({attributes: ['id', 'name']}).then(courses => {
+    let playlistId = req.query.playlistId
+
+    schema.course.findAll({
+        attributes: ['id', 'position', 'name'],
+        where: {
+            playlistId
+        }
+    }).then(courses => {
         var response = []
         courses.forEach(course => {
             response.push({
