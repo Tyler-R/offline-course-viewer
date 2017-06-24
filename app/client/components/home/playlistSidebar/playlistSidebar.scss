@@ -1,0 +1,31 @@
+.playlist-sidebar-nav {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 1;
+    top: auto;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+    box-shadow: 0px 2px 4px grey;
+}
+
+.playlist-sidebar-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid grey;
+    width: 100%;
+}
+
+.playlist-sidebar-icon {
+    float: right;
+    font-size: 32px;
+    top: 80%;
+    margin-top: 8px;
+}
+
+.playlist-sidebar-icon:hover {
+    cursor: pointer;
+    cursor: hand;
+}
