@@ -11,6 +11,8 @@ class VideoLecture extends Component {
         this.state = {
             id: props.id,
             name: props.name,
+            completionMessageSent: false,
+            completeLecture: props.completeLecture,
             videoPath: "/stream?lectureId=" + props.id
         }
     }
@@ -23,9 +25,13 @@ class VideoLecture extends Component {
                 params: {
                     lectureId: this.state.id
                 }
-            }).then(result => {
-                // lecture video is completed
             });
+
+            this.state.completeLecture();
+
+            this.setState({
+                completionMessageSent: true
+            })
         }
     }
 
