@@ -1,5 +1,7 @@
 import { ADD_LECTURES } from '../../actions/index.js';
 import { TOGGLE_COLLAPSED } from '../../actions/index.js';
+import { COMPLETE_LECTURE } from '../../actions/index.js';
+
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -21,6 +23,30 @@ export default function(state = {}, action) {
                     collapsed
                 }
             });
+        case COMPLETE_LECTURE:
+            let lectureGroupId = undefined;
+            let newLectures = undefined;
+            Object.keys(state).forEach((id) => {
+                let value = state[id];
+                for (let i = 0; i < value.lectures.length; i++) {
+                    if(value.lectures[i].id == action.lectureId) {
+                        lectureGroupId = id;
+                        newLectures = JSON.parse(JSON.stringify(value.lectures));
+                        newLectures[i].completed = true;
+                    }
+                }
+            });
+
+            if(lectureGroupId == undefined) {
+                return state;
+            } else {
+                return Object.assign({}, state, {
+                    [lectureGroupId]: {
+                        lectures: newLectures,
+                        collapsed: state[lectureGroupId].collapsed
+                    }
+                });
+            }
         default: {
             return state;
         }
