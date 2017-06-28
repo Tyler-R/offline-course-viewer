@@ -47,7 +47,6 @@ class Home extends Component {
                         } else {
                             // item in dropdown menu was clicked
                             $(e.target).parents('.dropdown-list').toggleClass("show")
-                            console.log($(e.target));
                         }
                     });
 
