@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom'
+
 import style from './sidebarLecture.scss';
 
 
@@ -8,6 +9,14 @@ class SidebarLecture extends Component {
     constructor(props) {
         super(props);
 
+        this.initializeState(props);
+    }
+
+    componentWillReceiveProps(props) {
+        this.initializeState(props);
+    }
+
+    initializeState(props) {
         this.state = {
             id: props.id,
             name: props.name,
@@ -36,7 +45,7 @@ class SidebarLecture extends Component {
 
         return (
             <Link to={lecturePath}>
-                <li className="collection-item">
+                <li className="collection-item sidebar-lecture-container">
                     <div>
                         <i className="material-icons lecture-icon" style={iconColor}>
                             {playIcon}
