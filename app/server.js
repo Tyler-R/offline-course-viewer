@@ -160,6 +160,19 @@ app.put('/lecture/complete/:lectureId', (req, res) => {
     });
 });
 
+app.put('/playlist/:name', (req, res) => {
+    let name = req.body.params.name;
+
+    schema.playlist.max('position')
+    .then((maxPosition) => {
+        schema.playlist.create({
+            name,
+            position: maxPosition + 1,
+            isDefault: false,
+        });
+    });
+});
+
 
 schema.syncAll().then(() => {
     app.listen(port, () => {
