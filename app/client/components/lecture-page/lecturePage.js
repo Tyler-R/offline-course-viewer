@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import Sidebar from '../../containers/lecturePage/sidebar.js';
-import VideoLecture from './VideoLecture/VideoLecture.js';
+import VideoLecture from '../../containers/lecturePage/VideoLecture.js';
 import ReadingLecture from './readingLecture/readingLecture.js';
+import Navbar from './navbar/navbar.js'
 
 import style from './lecturePage.scss';
 
@@ -53,6 +54,7 @@ class LecturePage extends Component {
 
         return (
             <span>
+                <Navbar />
                 <Sidebar
                     key={this.state.weekId}
                     weekId={this.state.weekId}
