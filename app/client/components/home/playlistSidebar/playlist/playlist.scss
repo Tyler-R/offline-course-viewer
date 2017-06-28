@@ -24,6 +24,7 @@ $horizontal-padding: 16px;
     transition: 0.3s;
     overflow: auto;
     position: relative;
+    border-bottom: 0.1px solid grey;
 }
 
 .playlist:hover {

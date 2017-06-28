@@ -3,18 +3,27 @@ import ReactDOM from 'react-dom';
 
 import style from './playlist.scss';
 
+function handleClick(event) {
+    console.log(event);
+}
+
+function showSettings(event) {
+    event.stopPropagation();
+    console.log("settings");
+}
+
 const Playlist = ({id, name, position}) => {
     console.log("hello world");
     return (
         <span>
-            <li className="playlist" onClick={(e) => this.handleClick(e)}>
+            <li className="playlist" onClick={(e) => handleClick(e)}>
                 <div>
                     <span className="playlist-title">
                         {name}
                     </span>
 
-                    <i className="material-icons playlist-icon">
-
+                    <i className="material-icons playlist-icon" onClick={(e) => showSettings(e)}>
+                        settings
                     </i>
                 </div>
             </li>

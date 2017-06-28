@@ -1,0 +1,31 @@
+$sidebar-width: 300px;
+$icon-side: 24px;
+$horizontal-padding: 16px;
+
+.create-playlist-form-container {
+    display: block;
+    padding: 8px $horizontal-padding 8px $horizontal-padding;
+    text-decoration: none;
+    transition: 0.3s;
+    overflow: auto;
+    position: relative;
+    border-bottom: 0.1px solid grey;
+}
+
+.create-playlist-form-button {
+    text-align: center;
+    display: block;
+    padding-top: 10px;
+}
+
+.create-playlist-form-icon {
+
+}
+
+.create-playlist-form-title {
+    font-size: 14px;
+    display: table-cell;
+    vertical-align: top;
+    float: left;
+    width: $sidebar-width - $horizontal-padding - $horizontal-padding - $icon-side;
+}
