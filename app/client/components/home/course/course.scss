@@ -1,6 +1,11 @@
 .course-container {
     display: block;
-    overflow: auto;
+    overflow: visible;
+}
+
+.course-container:hover {
+    cursor: hand;
+    cursor: pointer;
 }
 
 .collapsible-content-container {
@@ -27,6 +32,12 @@
     width: 5%;
 }
 
+.course-settings-icon:hover {
+    cursor: hand;
+    cursor: pointer;
+    -webkit-transform: scale(1.2);
+}
+
 .bottom-button {
     margin-bottom: 8pt;
 }
@@ -37,23 +48,26 @@
 }
 
 /*don't use .dropdown-list as it is declared in materialize-css*/
-.dropdown-list {
+.course-dropdown-list {
     display: none;
-    position: fixed;
+    position: absolute;
     margin-left: -150px;
     background-color: white;
     width: 150px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
     z-index: 1;
 }
 
-.dropdown-list a {
+.course-dropdown-list a {
     color: black;
     padding-left: 15px;
+    font-size: 18px;
 }
 
-.dropdown-list li:hover{
-    background-color: blue;
+.course-dropdown-list li:hover{
+    background-color: #EEE;
+    cursor: hand;
+    cursor: pointer;
 }
 
 .show {

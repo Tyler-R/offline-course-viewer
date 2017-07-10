@@ -49,7 +49,7 @@ class Course extends Component {
         return (
             <span className='row'>
                 <div className='col s6 offset-s3'>
-                    <ul className="collection with-header">
+                    <ul className="collection with-header" style={{overflow: "visible"}}>
                         <li className="course-container collection-header" onClick={(e) => this.handleClick(e)}>
                             <table>
                                 <tbody>
@@ -66,9 +66,11 @@ class Course extends Component {
                                                 settings
                                             </i>
 
-                                            <ul id={this.state.id} className="dropdown-list">
-                                                <li><a href="#!">edit name</a></li>
-                                                <li><a href='#!'>move</a></li>
+                                            <ul id={this.state.id} className="course-dropdown-list">
+                                                <li><a href="#">Rename</a></li>
+                                                <li><a href='#'>Move</a></li>
+                                                <li><a href='#'>Delete</a></li>
+                                                <li><a href='#'>Add to Playlist</a></li>
                                             </ul>
                                         </td>
                                     </tr>
