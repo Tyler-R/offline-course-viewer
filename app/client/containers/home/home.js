@@ -5,7 +5,7 @@ import Home from '../../components/home/home.js';
 const mapStateToProps = (state, ownProps) => {
     let selectedPlaylist = state.playlists.selectedPlaylist;
     let playlists = state.playlists.playlists;
-    let courses = state.courses.courses;
+    let courses = state.courses[selectedPlaylist];
 
     playlists = playlists == undefined ? [] : playlists;
     courses = courses == undefined ? [] : courses;

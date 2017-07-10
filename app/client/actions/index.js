@@ -59,9 +59,10 @@ export function addPlaylists(playlists) {
 }
 
 
-export function addCourses(courses) {
+export function addCourses(courses, playlistId) {
     return {
         type: ADD_COURSES,
+        playlistId,
         courses,
     }
 }

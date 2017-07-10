@@ -4,7 +4,7 @@ export default function(state = {}, action) {
     switch(action.type) {
         case ADD_COURSES:
             return Object.assign({}, state, {
-                courses: action.courses
+                [action.playlistId]: action.courses
             });
         default: {
             return state;
