@@ -3,15 +3,15 @@ import { addPlaylists, addCourses } from '../../actions/index.js';
 import Home from '../../components/home/home.js';
 
 const mapStateToProps = (state, ownProps) => {
-    let selectedPlaylist = state.playlists.selectedPlaylist;
+    let selectedPlaylistId = state.playlists.selectedPlaylistId;
     let playlists = state.playlists.playlists;
-    let courses = state.courses[selectedPlaylist];
+    let courses = state.courses[selectedPlaylistId];
 
     playlists = playlists == undefined ? [] : playlists;
     courses = courses == undefined ? [] : courses;
 
     return {
-        selectedPlaylist,
+        selectedPlaylistId,
         playlists,
         courses
     }

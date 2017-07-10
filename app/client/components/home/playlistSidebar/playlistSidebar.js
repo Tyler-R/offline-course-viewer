@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import Playlist from './playlist/playlist.js';
+import Playlist from '../../../containers/home/playlist.js';
 import CreatePlaylistForm from './createPlaylistForm/createPlaylistForm.js';
 
 import style from './playlistSidebar.scss';

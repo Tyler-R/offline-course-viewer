@@ -85,8 +85,12 @@ class Home extends Component {
                 this.getCourses(playlists, selectedPlaylistId);
                 this.state.onPlaylistsReceived(playlists);
             });
-        } else {
-            this.getCourses(this.state.playlist, this.state.selectedPlaylistId);
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.state.courses.length == 0 && this.state.selectedPlaylistId != undefined && this.state.playlists.length != 0) {
+            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
         }
     }
 
