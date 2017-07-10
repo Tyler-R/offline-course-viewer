@@ -7,6 +7,9 @@ export const TOGGLE_COLLAPSED = "TOGGLE_COLLAPSED";
 export const COMPLETE_LECTURE = "COMPLETE_LECTURE";
 
 export const SELECT_PLAYLIST = "SELECT_PLAYLIST";
+export const ADD_PLAYLISTS = "ADD_PLAYLISTS";
+
+export const ADD_COURSES = "ADD_COURSES";
 
 export function addLectureGroups(lectureGroups, weekId) {
     return {
@@ -45,5 +48,20 @@ export function selectPlaylist(playlistId) {
     return {
         type: SELECT_PLAYLIST,
         playlistId,
+    }
+}
+
+export function addPlaylists(playlists) {
+    return {
+        type: ADD_PLAYLISTS,
+        playlists,
+    }
+}
+
+
+export function addCourses(courses) {
+    return {
+        type: ADD_COURSES,
+        courses,
     }
 }
