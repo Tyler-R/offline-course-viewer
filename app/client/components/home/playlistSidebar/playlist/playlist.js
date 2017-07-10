@@ -17,9 +17,10 @@ const Playlist = ({id, name, position, setSelectedPlaylistId}) => {
                         {name}
                     </span>
 
-                    <i className="material-icons playlist-icon" onClick={(e) => showSettings(e)}>
+                    <i className="material-icons dropdown-icon playlist-icon" onClick={(e) => showSettings(e)}>
                         settings
                     </i>
+
                 </div>
             </li>
         </span>

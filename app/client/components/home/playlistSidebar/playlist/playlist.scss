@@ -8,6 +8,15 @@ $horizontal-padding: 16px;
     float: right;
 }
 
+.playlist-icon:hover {
+    -webkit-transform: scale(1.2);
+}
+
+.playlist-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
 .playlist-title {
     font-size: 14px;
     display: table-cell;
