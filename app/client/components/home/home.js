@@ -74,9 +74,6 @@ class Home extends Component {
             courses.push(<Course key={course.id} id={course.id} name={course.name} />);
         });
 
-        console.log("rendering");
-        console.log(this.state);
-
         return (
             <div>
                 <Navbar />

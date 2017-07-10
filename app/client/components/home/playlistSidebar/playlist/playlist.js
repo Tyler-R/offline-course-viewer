@@ -13,7 +13,6 @@ function showSettings(event) {
 }
 
 const Playlist = ({id, name, position}) => {
-    console.log("hello world");
     return (
         <span>
             <li className="playlist" onClick={(e) => handleClick(e)}>
