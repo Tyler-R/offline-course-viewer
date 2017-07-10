@@ -76,9 +76,7 @@ class Course extends Component {
                                     </tr>
                                 </tbody>
                             </table>
-
-                            <a href="#" className="btn right bottom-button collapse-disabled">Go to Course</a>
-
+                            
                         </li>
                         {weeks.length > 0 &&
                             <ul className="collection">
