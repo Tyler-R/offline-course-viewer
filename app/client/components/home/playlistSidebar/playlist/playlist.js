@@ -8,10 +8,10 @@ function showSettings(event) {
     console.log("settings");
 }
 
-const Playlist = ({id, name, position, onPlaylistSelected}) => {
+const Playlist = ({id, name, position, setSelectedPlaylistId}) => {
     return (
         <span>
-            <li className="playlist" onClick={(e) => onPlaylistSelected(id)}>
+            <li className="playlist" onClick={(e) => setSelectedPlaylistId(id)}>
                 <div>
                     <span className="playlist-title">
                         {name}

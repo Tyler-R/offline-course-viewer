@@ -24,6 +24,7 @@ class Home extends Component {
             selectedPlaylistId: props.selectedPlaylistId,
             onPlaylistsReceived: props.onPlaylistsReceived,
             onCoursesReceived: props.onCoursesReceived,
+            setSelectedPlaylistId: props.setSelectedPlaylistId,
         }
     }
 
@@ -40,7 +41,7 @@ class Home extends Component {
             this.setState({
                 playlists,
                 courses,
-            })
+            });
 
 
             $(document).ready(() => {
@@ -76,7 +77,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        if(this.state.selectedPlaylistId == undefined && this.state.playlists.length == 0) {
+        if(this.state.selectedPlaylistId == undefined) {
             axios.get('/playlists')
             .then(playlistResponse => {
                 const playlists = playlistResponse.data.playlists
@@ -84,12 +85,15 @@ class Home extends Component {
 
                 this.getCourses(playlists, selectedPlaylistId);
                 this.state.onPlaylistsReceived(playlists);
+                this.state.setSelectedPlaylistId(selectedPlaylistId);
             });
+        } else {
+            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
         }
     }
 
     componentDidUpdate() {
-        if(this.state.courses.length == 0 && this.state.selectedPlaylistId != undefined && this.state.playlists.length != 0) {
+        if(this.state.courses.length == 0) {
             this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
         }
     }

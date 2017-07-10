@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addPlaylists, addCourses } from '../../actions/index.js';
+import { addPlaylists, addCourses, selectPlaylist } from '../../actions/index.js';
 import Home from '../../components/home/home.js';
 
 const mapStateToProps = (state, ownProps) => {
@@ -24,6 +24,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         onCoursesReceived: (courses) => {
             dispatch(addCourses(courses))
+        },
+        setSelectedPlaylistId: (playlistId) => {
+            dispatch(selectPlaylist(playlistId))
         }
     }
 }

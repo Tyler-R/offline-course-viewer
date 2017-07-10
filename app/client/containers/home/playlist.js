@@ -4,7 +4,7 @@ import Playlist from '../../components/home/playlistSidebar/playlist/playlist.js
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onPlaylistSelected: (playlistId) => {
+        setSelectedPlaylistId: (playlistId) => {
             dispatch(selectPlaylist(playlistId))
         }
     }
