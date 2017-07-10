@@ -49,42 +49,39 @@ class Course extends Component {
         return (
             <span className='row'>
                 <div className='col s6 offset-s3'>
-                    <ul className="collection with-header" style={{overflow: "visible"}}>
-                        <li className="course-container collection-header" onClick={(e) => this.handleClick(e)}>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td className="material-icons course-dropdown-icon">
-                                            {collapseIconName}
-                                        </td>
-                                        <td className="course-name">
-                                            {this.state.name}
-                                        </td>
+                    <li className="course-container collection-header" onClick={(e) => this.handleClick(e)}>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td className="material-icons course-dropdown-icon">
+                                        {collapseIconName}
+                                    </td>
+                                    <td className="course-name">
+                                        {this.state.name}
+                                    </td>
 
-                                        <td className="dropdown right collapse-disabled">
-                                            <i className="material-icons black-text dropdown-icon course-settings-icon">
-                                                settings
-                                            </i>
+                                    <td className="dropdown right collapse-disabled">
+                                        <i className="material-icons black-text dropdown-icon course-settings-icon">
+                                            settings
+                                        </i>
 
-                                            <ul id={this.state.id} className="course-dropdown-list">
-                                                <li><a href="#">Rename</a></li>
-                                                <li><a href='#'>Move</a></li>
-                                                <li><a href='#'>Delete</a></li>
-                                                <li><a href='#'>Add to Playlist</a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            
-                        </li>
-                        {weeks.length > 0 &&
-                            <ul className="collection">
-                                {weeks}
-                            </ul>
-                        }
-                    </ul>
+                                        <ul id={this.state.id} className="course-dropdown-list">
+                                            <li><a href="#">Rename</a></li>
+                                            <li><a href='#'>Move</a></li>
+                                            <li><a href='#'>Delete</a></li>
+                                            <li><a href='#'>Add to Playlist</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
+                    </li>
+                    {weeks.length > 0 &&
+                        <ul className="collection">
+                            {weeks}
+                        </ul>
+                    }
 
                 </div>
             </span>

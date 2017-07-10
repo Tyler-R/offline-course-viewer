@@ -1,6 +1,10 @@
 .course-container {
     display: block;
     overflow: visible;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    position: relative;
+    margin-top: 20px;
 }
 
 .course-container:hover {
