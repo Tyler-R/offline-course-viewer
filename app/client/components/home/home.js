@@ -43,36 +43,40 @@ class Home extends Component {
                 courses,
             });
 
+            this.initializeJQuery();
 
-            $(document).ready(() => {
-                // stops button and icons from expanding and collapsing the collapsible section
-                $(".collapse-disabled").click((e) => {
-                    e.stopPropagation();
-                });
+        });
+    }
 
-                $(".dropdown").click((e) => {
-                    if($(e.target).hasClass('dropdown-icon')) {
-                        // dropdown icon wwas clicked do display dropdown menu
-                        $(e.target).siblings(".dropdown-list").toggleClass("show");
-                    } else {
-                        // item in dropdown menu was clicked
-                        $(e.target).parents('.dropdown-list').toggleClass("show")
-                    }
-                });
+    initializeJQuery() {
+        $(document).ready(() => {
+            // stops button and icons from expanding and collapsing the collapsible section
+            $(".collapse-disabled").click((e) => {
+                e.stopPropagation();
+            });
 
-                window.onclick = (e) => {
-                    if (!event.target.matches('.dropdown-icon')) {
+            $(".dropdown").click((e) => {
+                if($(e.target).hasClass('dropdown-icon')) {
+                    // dropdown icon wwas clicked do display dropdown menu
+                    $(e.target).siblings(".course-dropdown-list").toggleClass("show");
+                } else {
+                    // item in dropdown menu was clicked
+                    $(e.target).parents('.course-dropdown-list').toggleClass("show")
+                }
+            });
 
-                        let dropdowns = document.getElementsByClassName("dropdown-list");
-                        for (let i = 0; i < dropdowns.length; i++) {
-                            var openDropdown = dropdowns[i];
-                            if (openDropdown.classList.contains('show')) {
-                                openDropdown.classList.remove('show');
-                            }
+            window.onclick = (e) => {
+                if (!event.target.matches('.dropdown-icon')) {
+
+                    let dropdowns = document.getElementsByClassName("course-dropdown-list");
+                    for (let i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
                         }
                     }
                 }
-            });
+            }
         });
     }
 
@@ -104,6 +108,8 @@ class Home extends Component {
         this.state.courses.forEach(course => {
             courses.push(<Course key={course.id} id={course.id} name={course.name} />);
         });
+
+        this.initializeJQuery();
 
         return (
             <div>
