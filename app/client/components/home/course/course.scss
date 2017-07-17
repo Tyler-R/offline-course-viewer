@@ -42,11 +42,6 @@
     -webkit-transform: scale(1.2);
 }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
 /*don't use .dropdown-list as it is declared in materialize-css*/
 .course-dropdown-list {
     display: none;
@@ -68,8 +63,4 @@
     background-color: #EEE;
     cursor: hand;
     cursor: pointer;
-}
-
-.show {
-    display: block;
 }

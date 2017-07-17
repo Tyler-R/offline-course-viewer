@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Week from '../week/week.js';
 import style from './course.scss';
+import dropdownStyle from '../dropdown/dropdown.scss';
 import axios from 'axios';
 
 class Course extends Component {
@@ -60,8 +61,8 @@ class Course extends Component {
                                         {this.state.name}
                                     </td>
 
-                                    <td className="dropdown right collapse-disabled">
-                                        <i className="material-icons black-text dropdown-icon course-settings-icon">
+                                    <td className="dropdown right" onClick={e => e.stopPropagation()}>
+                                        <i className="material-icons black-text course-settings-icon">
                                             settings
                                         </i>
 
