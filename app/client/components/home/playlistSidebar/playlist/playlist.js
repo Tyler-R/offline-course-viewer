@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
 import style from './playlist.scss';
+import dropdownStyle from '../../dropdown/dropdown.scss';
 
 function showSettings(event) {
     event.stopPropagation();
@@ -11,18 +12,29 @@ function showSettings(event) {
 const Playlist = ({id, name, position, setSelectedPlaylistId}) => {
     return (
         <span>
-            <li className="playlist" onClick={(e) => setSelectedPlaylistId(id)}>
-                <div>
-                    <span className="playlist-title">
-                        {name}
-                    </span>
+            <div className="playlist" onClick={(e) => setSelectedPlaylistId(id)}>
+                <table>
+                    <tbody>
+                        <tr>
+                            <span className="playlist-title">
+                                {name}
+                            </span>
 
-                    <i className="material-icons dropdown-icon playlist-icon" onClick={(e) => showSettings(e)}>
-                        settings
-                    </i>
+                            <span className="dropdown right" onClick={e => e.stopPropagation()}>
+                                <i className="material-icons playlist-icon">
+                                    settings
+                                </i>
 
-                </div>
-            </li>
+                                <ul id={id} className="playlist-dropdown-list">
+                                    <li><a href="#">Rename</a></li>
+                                    <li><a href='#'>Move</a></li>
+                                    <li><a href='#'>Delete</a></li>
+                                </ul>
+                            </span>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </span>
     );
 }

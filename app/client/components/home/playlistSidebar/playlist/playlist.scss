@@ -2,6 +2,16 @@ $sidebar-width: 300px;
 $icon-side: 24px;
 $horizontal-padding: 16px;
 
+.playlist {
+    display: block;
+    padding: 8px $horizontal-padding 8px $horizontal-padding;
+    text-decoration: none;
+    transition: 0.3s;
+    overflow: visible;
+    position: relative;
+    border-bottom: 0.1px solid grey;
+}
+
 .playlist-icon {
     display: table-cell;
     vertical-align: middle;
@@ -12,9 +22,26 @@ $horizontal-padding: 16px;
     -webkit-transform: scale(1.2);
 }
 
-.playlist-dropdown {
-    position: relative;
-    display: inline-block;
+.playlist-dropdown-list {
+    display: none;
+    position: absolute;
+    margin-left: -150px;
+    background-color: white;
+    width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1;
+}
+
+.playlist-dropdown-list a {
+    color: black;
+    padding-left: 15px;
+    font-size: 18px;
+}
+
+.playlist-dropdown-list li:hover{
+    background-color: #EEE;
+    cursor: hand;
+    cursor: pointer;
 }
 
 .playlist-title {
@@ -24,16 +51,6 @@ $horizontal-padding: 16px;
     float: left;
     width: $sidebar-width - $horizontal-padding - $horizontal-padding - $icon-side;
     font-weight: bold;
-}
-
-.playlist {
-    display: block;
-    padding: 8px $horizontal-padding 8px $horizontal-padding;
-    text-decoration: none;
-    transition: 0.3s;
-    overflow: auto;
-    position: relative;
-    border-bottom: 0.1px solid grey;
 }
 
 .playlist:hover {
