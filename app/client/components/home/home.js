@@ -50,30 +50,30 @@ class Home extends Component {
 
     initializeJQuery() {
         $(document).ready(() => {
-            // stops button and icons from expanding and collapsing the collapsible section
-            $(".collapse-disabled").click((e) => {
-                e.stopPropagation();
-            });
-
             $(".dropdown").click((e) => {
-                if($(e.target).hasClass('dropdown-icon')) {
-                    // dropdown icon wwas clicked do display dropdown menu
+                if($(e.target).hasClass('course-settings-icon')) {
+                    // dropdown icon was clicked so display dropdown menu
                     $(e.target).siblings(".course-dropdown-list").toggleClass("show");
-                } else {
+                } else if($(e.target).hasClass('playlist-icon')) {
+                    $(e.target).siblings(".playlist-dropdown-list").toggleClass('show');
+                } else if($(e.target).parents('.course-dropdown-list').hasClass('show')){
                     // item in dropdown menu was clicked
                     $(e.target).parents('.course-dropdown-list').toggleClass("show")
+                } else if($(e.target).parents('.playlist-dropdown-list').hasClass('show')) {
+                    $(e.target).parents('.playlist-dropdown-list').toggleClass("show")
                 }
             });
 
             window.onclick = (e) => {
-                if (!event.target.matches('.dropdown-icon')) {
 
-                    let dropdowns = document.getElementsByClassName("course-dropdown-list");
-                    for (let i = 0; i < dropdowns.length; i++) {
-                        var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
+                let dropdowns = []
+                dropdowns.push.apply(dropdowns, document.getElementsByClassName("course-dropdown-list"));
+                dropdowns.push.apply(dropdowns, document.getElementsByClassName("playlist-dropdown-list"))
+
+                for (let i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
                     }
                 }
             }
