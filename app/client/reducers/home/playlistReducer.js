@@ -1,4 +1,4 @@
-import { ADD_PLAYLISTS, SELECT_PLAYLIST, DELETE_PLAYLIST } from '../../actions/index.js';
+import { ADD_PLAYLISTS, SELECT_PLAYLIST, DELETE_PLAYLIST, RENAME_PLAYLIST } from '../../actions/index.js';
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -11,10 +11,25 @@ export default function(state = {}, action) {
                 selectedPlaylistId: action.playlistId
             });
         case DELETE_PLAYLIST:
-            console.log(state.playlists.filter(playlist => playlist.id != action.playlistId))
             return Object.assign({}, {}, {
                 playlists: state.playlists.filter(playlist => playlist.id != action.playlistId),
                 selectedPlaylistId: state.selectedPlaylistId,
+            });
+        case RENAME_PLAYLIST:
+            let playlists = state.playlists.map(playlist => {
+                if(playlist.id == action.playlistId) {
+                    let newPlaylist = {
+                        name: action.newName
+                    };
+
+                    return Object.assign({}, playlist, newPlaylist);
+                } else {
+                    return playlist
+                }
+            });
+
+            return Object.assign({}, state, {
+                playlists
             });
         default: {
             return state;
