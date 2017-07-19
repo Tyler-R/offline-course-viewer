@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import Playlist from '../../../containers/home/playlist.js';
-import CreatePlaylistForm from './createPlaylistForm/createPlaylistForm.js';
+import CreatePlaylistForm from '../../../containers/home/createPlaylistForm.js';
 
 import style from './playlistSidebar.scss';
 
