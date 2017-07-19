@@ -46,30 +46,43 @@ class CreatePlaylistForm extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <span className={this.state.showForm ? " hide create-playlist-form-button" : "create-playlist-form-button"}>
-                    <span className="btn-floating waves-effect waves-light blue" onClick={(e) => this.showForm(e)}>
-                        <i className="material-icons">
-                            add
-                        </i>
-                    </span>
+        let showFormButton = (
+            <span className={this.state.showForm ? " hide create-playlist-form-button" : "create-playlist-form-button"}>
+                <span className="btn-floating waves-effect waves-light blue" onClick={(e) => this.showForm(e)}>
+                    <i className="material-icons">
+                        add
+                    </i>
+                </span>
+            </span>
+        );
+
+        let addPlaylistForm = (
+            <form
+                className={this.state.showForm ? "create-playlist-form-container" : "hide create-playlist-form-container"}
+                onSubmit={e => this.submitPlaylist(e)}
+            >
+                <input autoFocus type="text" value={this.state.newPlaylistTitleText} placeholder={"Add Playlist"} onChange={(e) => this.handleNewPlaylistTitleUpdate(e)} className="create-playlist-form-title"/>
+
+                <span className="btn waves-effect waves-light blue left" onClick={e => this.hideForm(e)}>
+                    Cancel
                 </span>
 
-                <form
-                    className={this.state.showForm ? "create-playlist-form-container" : "hide create-playlist-form-container"}
-                    onSubmit={e => this.submitPlaylist(e)}
-                >
-                    <input type="text" value={this.state.newPlaylistTitleText} placeholder={"Add Playlist"} onChange={(e) => this.handleNewPlaylistTitleUpdate(e)} className="create-playlist-form-title"/>
+                <button className="btn waves-effect waves-light right blue" type="submit">
+                    Create
+                </button>
+            </form>
+        );
 
-                    <span className="btn waves-effect waves-light blue left" onClick={e => this.hideForm(e)}>
-                        Cancel
-                    </span>
 
-                    <button className="btn waves-effect waves-light right blue" type="submit">
-                        Create
-                    </button>
-                </form>
+        return (
+            <div>
+                {!this.state.showForm &&
+                    showFormButton
+                }
+
+                {this.state.showForm &&
+                    addPlaylistForm
+                }
             </div>
         );
     }
