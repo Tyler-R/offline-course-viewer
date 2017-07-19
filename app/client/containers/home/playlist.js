@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { selectPlaylist, deletePlaylist } from '../../actions/index.js';
+import { selectPlaylist, deletePlaylist, renamePlaylist } from '../../actions/index.js';
 import Playlist from '../../components/home/playlistSidebar/playlist/playlist.js';
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -9,6 +9,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         deletePlaylist: (playlistId) => {
             dispatch(deletePlaylist(playlistId))
+        },
+        setNewName: (playlistId, newName) => {
+            dispatch(renamePlaylist(playlistId, newName))
         }
     }
 }
