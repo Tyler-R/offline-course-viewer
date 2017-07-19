@@ -11,6 +11,7 @@ class CreatePlaylistForm extends Component {
         this.state = {
             showForm: false,
             newPlaylistTitleText: "",
+            onPlaylistCreated: props.onPlaylistCreated,
         }
     }
 
@@ -19,6 +20,8 @@ class CreatePlaylistForm extends Component {
             params: {
                 name: this.state.newPlaylistTitleText,
             }
+        }).then((playlist) => {
+            this.state.onPlaylistCreated(playlist.data)
         });
 
         this.setState({
