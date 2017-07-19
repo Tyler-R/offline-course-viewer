@@ -1,4 +1,4 @@
-import { ADD_PLAYLISTS, SELECT_PLAYLIST, DELETE_PLAYLIST, RENAME_PLAYLIST } from '../../actions/index.js';
+import { ADD_PLAYLISTS, SELECT_PLAYLIST, DELETE_PLAYLIST, RENAME_PLAYLIST, ADD_PLAYLIST } from '../../actions/index.js';
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -31,6 +31,10 @@ export default function(state = {}, action) {
             return Object.assign({}, state, {
                 playlists
             });
+        case ADD_PLAYLIST:
+            return Object.assign({}, state, {
+                playlists: [...state.playlists, action.playlist]
+            })
         default: {
             return state;
         }
