@@ -28,6 +28,28 @@ class Home extends Component {
         }
     }
 
+    componentDidMount() {
+        if(this.state.selectedPlaylistId == undefined) {
+            axios.get('/playlists')
+            .then(playlistResponse => {
+                const playlists = playlistResponse.data.playlists
+                const selectedPlaylistId = playlistResponse.data.defaultPlaylistId
+
+                this.getCourses(playlists, selectedPlaylistId);
+                this.state.onPlaylistsReceived(playlists);
+                this.state.setSelectedPlaylistId(selectedPlaylistId);
+            });
+        } else {
+            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.state.courses.length == 0) {
+            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
+        }
+    }
+
     getCourses(playlists, selectedPlaylistId) {
         axios.get('courses', {
             params: {
@@ -78,28 +100,6 @@ class Home extends Component {
                 }
             }
         });
-    }
-
-    componentDidMount() {
-        if(this.state.selectedPlaylistId == undefined) {
-            axios.get('/playlists')
-            .then(playlistResponse => {
-                const playlists = playlistResponse.data.playlists
-                const selectedPlaylistId = playlistResponse.data.defaultPlaylistId
-
-                this.getCourses(playlists, selectedPlaylistId);
-                this.state.onPlaylistsReceived(playlists);
-                this.state.setSelectedPlaylistId(selectedPlaylistId);
-            });
-        } else {
-            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
-        }
-    }
-
-    componentDidUpdate() {
-        if(this.state.courses.length == 0) {
-            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
-        }
     }
 
     render() {
