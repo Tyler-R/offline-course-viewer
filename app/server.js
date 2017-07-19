@@ -173,6 +173,25 @@ app.post('/playlist/:name', (req, res) => {
     });
 });
 
+// rename playlist
+app.put('/playlist/:id/:newName', (req, res) => {
+    let id = req.body.params.id;
+    let newName = req.body.params.newName;
+
+    schema.playlist.update(
+        {name: newName},
+        {
+            where: {
+                id
+            }
+        }
+    ).then(() => {
+        res.send()
+    }).catch(err => {
+        res.status(400).send("failed to change playlist name");
+    });
+});
+
 app.delete('/playlist/:id', (req, res) => {
     let id = req.query.id
 
