@@ -8,6 +8,7 @@ export const COMPLETE_LECTURE = "COMPLETE_LECTURE";
 
 export const SELECT_PLAYLIST = "SELECT_PLAYLIST";
 export const ADD_PLAYLISTS = "ADD_PLAYLISTS";
+export const DELETE_PLAYLIST = "DELETE_PLAYLIST"
 
 export const ADD_COURSES = "ADD_COURSES";
 
@@ -55,6 +56,13 @@ export function addPlaylists(playlists) {
     return {
         type: ADD_PLAYLISTS,
         playlists,
+    }
+}
+
+export function deletePlaylist(playlistId) {
+    return {
+        type: DELETE_PLAYLIST,
+        playlistId
     }
 }
 
