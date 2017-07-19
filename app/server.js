@@ -160,7 +160,7 @@ app.put('/lecture/complete/:lectureId', (req, res) => {
     });
 });
 
-app.put('/playlist/:name', (req, res) => {
+app.post('/playlist/:name', (req, res) => {
     let name = req.body.params.name;
 
     schema.playlist.max('position')

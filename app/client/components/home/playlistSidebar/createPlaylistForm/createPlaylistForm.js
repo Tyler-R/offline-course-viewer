@@ -15,7 +15,7 @@ class CreatePlaylistForm extends Component {
     }
 
     submitPlaylist(event) {
-        axios.put('/playlist/:name', {
+        axios.post('/playlist/:name', {
             params: {
                 name: this.state.newPlaylistTitleText,
             }
