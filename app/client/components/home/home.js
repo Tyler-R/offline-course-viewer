@@ -72,6 +72,7 @@ class Home extends Component {
 
     initializeJQuery() {
         $(document).ready(() => {
+            $(".dropdown").off('click');
             $(".dropdown").click((e) => {
                 if($(e.target).hasClass('course-settings-icon')) {
                     // dropdown icon was clicked so display dropdown menu
@@ -87,7 +88,6 @@ class Home extends Component {
             });
 
             window.onclick = (e) => {
-
                 let dropdowns = []
                 dropdowns.push.apply(dropdowns, document.getElementsByClassName("course-dropdown-list"));
                 dropdowns.push.apply(dropdowns, document.getElementsByClassName("playlist-dropdown-list"))
