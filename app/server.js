@@ -169,6 +169,8 @@ app.post('/playlist/:name', (req, res) => {
             name,
             position: maxPosition + 1,
             isDefault: false,
+        }).then((playlist) => {
+            res.send(playlist);
         });
     });
 });
