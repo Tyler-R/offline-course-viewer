@@ -121,7 +121,7 @@ class Playlist extends Component {
         }).then(() => {
             this.state.swapPlaylistPositions(draggedPlaylistId, this.state.id);
         }).catch(err => {
-            console.log(err);
+            alert("Failed to move playlist");
         });
     }
 
