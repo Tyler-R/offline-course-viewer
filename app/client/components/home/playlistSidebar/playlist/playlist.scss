@@ -12,6 +12,16 @@ $horizontal-padding: 16px;
     border-bottom: 0.1px solid grey;
 }
 
+.playlist-move-mode {
+    @extend .playlist;
+    box-shadow: 2px 2px 2px grey;
+    z-index: 1;
+}
+
+.playlist-move-mode:hover {
+    cursor: move !important;
+}
+
 .playlist-icon {
     display: table-cell;
     vertical-align: middle;
@@ -57,4 +67,9 @@ $horizontal-padding: 16px;
     cursor: pointer;
     cursor: hand;
     background-color: #EEE;
+}
+
+.hovering-hand:hover {
+    cursor: pointer;
+    cursor: hand;
 }
