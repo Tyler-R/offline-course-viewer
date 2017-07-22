@@ -10,7 +10,7 @@ var playlist = sequelize.define('playlist', {
         defaultValue: dataType.UUIDV4
     },
     position: {
-        type: dataType.TEXT,
+        type: dataType.INTEGER,
         unique: true
     },
     name: {
