@@ -32,7 +32,9 @@ class Home extends Component {
         if(this.state.selectedPlaylistId == undefined) {
             axios.get('/playlists')
             .then(playlistResponse => {
-                const playlists = playlistResponse.data.playlists
+                let playlists = playlistResponse.data.playlists
+                playlists = playlists.sort((playlist1, playlist2) => {playlist1.position > playlist2.position})
+
                 const selectedPlaylistId = playlistResponse.data.defaultPlaylistId
 
                 this.getCourses(playlists, selectedPlaylistId);
