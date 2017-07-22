@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { selectPlaylist, deletePlaylist, renamePlaylist } from '../../actions/index.js';
+import { selectPlaylist, deletePlaylist, renamePlaylist, swapPlaylistPositions } from '../../actions/index.js';
 import Playlist from '../../components/home/playlistSidebar/playlist/playlist.js';
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -12,6 +12,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         setNewName: (playlistId, newName) => {
             dispatch(renamePlaylist(playlistId, newName))
+        },
+        swapPlaylistPositions: (playlistId, playlistId2) => {
+            dispatch(swapPlaylistPositions(playlistId, playlistId2))
         }
     }
 }
