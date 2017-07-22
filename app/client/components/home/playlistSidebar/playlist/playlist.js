@@ -16,7 +16,9 @@ class Playlist extends Component {
             setSelectedPlaylistId: props.setSelectedPlaylistId,
             deletePlaylist: props.deletePlaylist,
             setNewName: props.setNewName,
+            swapPlaylistPositions: props.swapPlaylistPositions,
             inEditMode: false,
+            inMoveMode: false,
             newName: props.name,
         }
     }
@@ -81,55 +83,114 @@ class Playlist extends Component {
         })
     }
 
+    handlePlaylistClicked(event) {
+        if(!this.state.inMoveMode) {
+            this.setSelectedPlaylist(event)
+        }
+    }
+
+    enterMoveMode() {
+        this.setState({
+            inMoveMode: true,
+        });
+    }
+
+    cancelMoveMode() {
+        this.setState({
+            inMoveMode: false,
+        });
+    }
+
+    startDrag(event) {
+        event.dataTransfer.setData("text", this.state.id);
+    }
+
+    onDragOver(event) {
+        event.preventDefault();
+    }
+
+    handleDrop(event) {
+        event.preventDefault();
+        let draggedPlaylistId = event.dataTransfer.getData("text");
+
+        axios.put('/playlist/swap/:id/:id2', {
+            params: {
+                id: this.state.id,
+                id2: draggedPlaylistId
+            }
+        }).then(() => {
+            this.state.swapPlaylistPositions(draggedPlaylistId, this.state.id);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     render() {
         let editModeDisplay = (
-            <form onSubmit={e => this.saveNewName()}>
-                <input className="playlist-title" autoFocus value={this.state.newName} onChange={e => this.updateNewName(e)}/>
-                <span className="btn waves-effect waves-light blue left" onClick={e => this.cancelEditMode()}>
-                    Cancel
-                </span>
+            <tr>
+                <form onSubmit={e => this.saveNewName()}>
+                    <input className="playlist-title" autoFocus value={this.state.newName} onChange={e => this.updateNewName(e)}/>
+                    <span className="btn waves-effect waves-light blue left" onClick={e => this.cancelEditMode()}>
+                        Cancel
+                    </span>
 
-                <button className="btn waves-effect waves-light right blue" type="submit">
-                    Save
-                </button>
-            </form>
+                    <button className="btn waves-effect waves-light right blue" type="submit">
+                        Save
+                    </button>
+                </form>
+            </tr>
         );
 
-        let nameDisplay = <span className="playlist-title">{this.state.name}</span>
+        let playlistDisplay = (
+            <tr>
+                <span className="playlist-title">{this.state.name}</span>
 
-        let settingsButton = (
-            <span className="dropdown right" onClick={e => e.stopPropagation()}>
-                <i className="material-icons playlist-icon">
-                    settings
-                </i>
+                <span className="dropdown right" onClick={e => e.stopPropagation()}>
+                    <i className="material-icons playlist-icon">
+                        settings
+                    </i>
 
-                <ul id={this.state.id} className="playlist-dropdown-list">
-                    <li onClick={e => this.enterEditMode()}><a>Rename</a></li>
-                    <li><a href='#'>Move</a></li>
-                    <li onClick={e => this.deletePlaylist()}><a>Delete</a></li>
-                </ul>
-            </span>
+                    <ul id={this.state.id} className="playlist-dropdown-list">
+                        <li onClick={e => this.enterEditMode()}><a>Rename</a></li>
+                        <li onClick={e => this.enterMoveMode()}><a>Move</a></li>
+                        <li onClick={e => this.deletePlaylist()}><a>Delete</a></li>
+                    </ul>
+                </span>
+            </tr>
+        );
+
+        let moveDisplay = (
+            <tr>
+                <span className="playlist-title">{this.state.name}</span>
+                    <i className="material-icons playlist-icon hovering-hand" onClick={e => this.cancelMoveMode()}>
+                        clear
+                    </i>
+            </tr>
         );
 
         return (
             <span>
-                <div className="playlist" onClick={e => this.setSelectedPlaylist(e)}>
+                <div    className={this.state.inMoveMode ? "playlist-move-mode" : "playlist"}
+                        draggable={this.state.inMoveMode}
+                        onDragStart={e => this.startDrag(e)}
+                        onDrop={e => this.handleDrop(e)}
+                        onDragOver={e => this.onDragOver(e)}
+                        onDragEnd={e => this.cancelMoveMode()}
+                        onClick={e => this.handlePlaylistClicked(e)}
+                >
                     <table>
                         <tbody>
-                            <tr>
-                                {this.state.inEditMode &&
-                                    editModeDisplay
-                                }
+                            {this.state.inEditMode && !this.state.inMoveMode &&
+                                editModeDisplay
+                            }
 
+                            {!this.state.inEditMode && !this.state.inMoveMode &&
+                                playlistDisplay
+                            }
 
-                                {!this.state.inEditMode &&
-                                    nameDisplay
-                                }
-
-                                {!this.state.inEditMode &&
-                                    settingsButton
-                                }
-                            </tr>
+                            {this.state.inMoveMode &&
+                                moveDisplay
+                            }
                         </tbody>
                     </table>
                 </div>
