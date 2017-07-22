@@ -11,6 +11,7 @@ export const ADD_PLAYLISTS = "ADD_PLAYLISTS";
 export const DELETE_PLAYLIST = "DELETE_PLAYLIST";
 export const RENAME_PLAYLIST = "RENAME_PLAYLIST";
 export const ADD_PLAYLIST = "ADD_PLAYLIST";
+export const SWAP_PLAYLIST_POSITIONS = "SWAP_PLAYLIST_POSITIONS";
 
 export const ADD_COURSES = "ADD_COURSES";
 
@@ -80,6 +81,14 @@ export function addPlaylist(playlist) {
     return {
         type: ADD_PLAYLIST,
         playlist,
+    }
+}
+
+export function swapPlaylistPositions(playlistId, playlistId2) {
+    return {
+        type: SWAP_PLAYLIST_POSITIONS,
+        playlistId,
+        playlistId2,
     }
 }
 
