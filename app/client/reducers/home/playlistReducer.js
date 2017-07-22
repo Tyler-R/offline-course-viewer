@@ -1,4 +1,4 @@
-import { ADD_PLAYLISTS, SELECT_PLAYLIST, DELETE_PLAYLIST, RENAME_PLAYLIST, ADD_PLAYLIST } from '../../actions/index.js';
+import { ADD_PLAYLISTS, SELECT_PLAYLIST, DELETE_PLAYLIST, RENAME_PLAYLIST, ADD_PLAYLIST, SWAP_PLAYLIST_POSITIONS } from '../../actions/index.js';
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -34,6 +34,22 @@ export default function(state = {}, action) {
         case ADD_PLAYLIST:
             return Object.assign({}, state, {
                 playlists: [...state.playlists, action.playlist]
+            });
+        case SWAP_PLAYLIST_POSITIONS:
+            let playlistPosition = state.playlists.findIndex(playlist => action.playlistId == playlist.id)
+            let playlist2Position = state.playlists.findIndex(playlist => action.playlistId2 == playlist.id)
+            let newPlaylists = [...state.playlists]
+
+            let temp = newPlaylists[playlistPosition];
+            newPlaylists[playlistPosition] = newPlaylists[playlist2Position];
+            newPlaylists[playlist2Position] = temp;
+
+            let tempPosition = newPlaylists[playlistPosition].position
+            newPlaylists[playlistPosition].position = newPlaylists[playlist2Position].position;
+            newPlaylists[playlist2Position].position = tempPosition;
+
+            return Object.assign({}, state, {
+                playlists: newPlaylists
             })
         default: {
             return state;
