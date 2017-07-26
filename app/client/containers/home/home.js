@@ -22,8 +22,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onPlaylistsReceived: (playlists) => {
             dispatch(addPlaylists(playlists))
         },
-        onCoursesReceived: (courses) => {
-            dispatch(addCourses(courses))
+        onCoursesReceived: (courses, playlistId) => {
+            dispatch(addCourses(courses, playlistId))
         },
         setSelectedPlaylistId: (playlistId) => {
             dispatch(selectPlaylist(playlistId))

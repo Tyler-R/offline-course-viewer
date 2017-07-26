@@ -37,9 +37,10 @@ class Home extends Component {
 
                 const selectedPlaylistId = playlistResponse.data.defaultPlaylistId
 
-                this.getCourses(playlists, selectedPlaylistId);
-                this.state.onPlaylistsReceived(playlists);
                 this.state.setSelectedPlaylistId(selectedPlaylistId);
+                this.state.onPlaylistsReceived(playlists);
+                this.getCourses(playlists, selectedPlaylistId);
+
             });
         } else {
             this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
@@ -58,17 +59,10 @@ class Home extends Component {
                 playlistId: selectedPlaylistId
             }
         }).then((coursesResponse) => {
-
             const courses = coursesResponse.data;
-            this.state.onCoursesReceived(courses);
-
-            this.setState({
-                playlists,
-                courses,
-            });
+            this.state.onCoursesReceived(courses, selectedPlaylistId);
 
             this.initializeJQuery();
-
         });
     }
 

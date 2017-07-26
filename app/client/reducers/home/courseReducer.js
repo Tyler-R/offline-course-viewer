@@ -1,4 +1,4 @@
-import ADD_COURSES from '../../actions/index.js';
+import { ADD_COURSES } from '../../actions/index.js';
 
 export default function(state = {}, action) {
     switch(action.type) {
