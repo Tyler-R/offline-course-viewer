@@ -14,6 +14,10 @@ export const ADD_PLAYLIST = "ADD_PLAYLIST";
 export const SWAP_PLAYLIST_POSITIONS = "SWAP_PLAYLIST_POSITIONS";
 
 export const ADD_COURSES = "ADD_COURSES";
+export const DELETE_COURSE = "DELETE_COURSE"
+export const ADD_COURSE_TO_PLAYLIST = "ADD_COURSE_TO_PLAYLIST"
+export const SWAP_COURSE_POSITION = "SWAP_COURSE_POSITION"
+
 
 export function addLectureGroups(lectureGroups, weekId) {
     return {
@@ -98,5 +102,30 @@ export function addCourses(courses, playlistId) {
         type: ADD_COURSES,
         playlistId,
         courses,
+    }
+}
+
+export function deleteCourse(courseId, playlistId) {
+    return {
+        type: DELETE_COURSE,
+        courseId,
+        playlistId,
+    }
+}
+
+export function addCourseToPlaylist(courseId, playlistId) {
+    return {
+        type: ADD_COURSE_TO_PLAYLIST,
+        courseId,
+        playlistId,
+    }
+}
+
+export function swapCoursePositions(courseId, courseId2, playlistId) {
+    return {
+        type: SWAP_COURSE_POSITION,
+        courseId,
+        courseId2,
+        playlistId,
     }
 }
