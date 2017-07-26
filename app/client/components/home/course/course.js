@@ -8,24 +8,36 @@ import axios from 'axios';
 class Course extends Component {
     constructor(props) {
         super(props);
+
+        this.initializeState(props);
+    }
+
+    componentWillReceiveProps(props) {
+        this.initializeState(props);
+    }
+
+    initializeState(props) {
         this.state = {
             id: props.id,
             name: props.name,
             weeks: [],
+            playlistId: props.playlistId,
+            playlists: props.playlists,
+            deleteCourse: props.deleteCourse,
+            addCourseToPlaylist: props.addCourseToPlaylist,
+            swapCoursePositions: props.swapCoursePositions,
             collapsed: true,
         };
     }
 
     handleClick(event) {
         if(this.state.collapsed) {
-            let self = this;
             axios.get('/weeks', {
                 params: {
                     courseId: this.state.id
                 }
-            })
-            .then(weeks => {
-                self.setState({
+            }).then(weeks => {
+                this.setState({
                     weeks: weeks.data,
                 });
             });
@@ -34,6 +46,10 @@ class Course extends Component {
         this.setState({
             collapsed: !this.state.collapsed,
         });
+    }
+
+    deleteCourse(event) {
+        this.state.deleteCourse();
     }
 
     render() {
@@ -67,9 +83,9 @@ class Course extends Component {
                                         </i>
 
                                         <ul id={this.state.id} className="course-dropdown-list">
-                                            <li><a href="#">Rename</a></li>
+                                            <li><a>Rename</a></li>
                                             <li><a href='#'>Move</a></li>
-                                            <li><a href='#'>Delete</a></li>
+                                            <li onClick={e => this.deleteCourse(e)}><a>Delete</a></li>
                                             <li><a href='#'>Add to Playlist</a></li>
                                         </ul>
                                     </td>
