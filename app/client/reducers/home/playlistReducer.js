@@ -13,9 +13,8 @@ export default function(state = {}, action) {
                 selectedPlaylistId: action.playlistId
             });
         case DELETE_PLAYLIST:
-            return Object.assign({}, {}, {
+            return Object.assign({}, state, {
                 playlists: state.playlists.filter(playlist => playlist.id != action.playlistId),
-                selectedPlaylistId: state.selectedPlaylistId,
             });
         case RENAME_PLAYLIST:
             let playlists = state.playlists.map(playlist => {
