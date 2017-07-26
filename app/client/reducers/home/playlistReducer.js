@@ -2,10 +2,12 @@ import { ADD_PLAYLISTS, SELECT_PLAYLIST, DELETE_PLAYLIST, RENAME_PLAYLIST, ADD_P
 
 export default function(state = {}, action) {
     switch(action.type) {
-        case ADD_PLAYLISTS:
+        case ADD_PLAYLISTS: {
+            let playlists = action.playlists.sort((playlist1, playlist2) => playlist1.position > playlist2.position)
             return Object.assign({}, state, {
-                playlists: action.playlists
+                playlists
             });
+        }
         case SELECT_PLAYLIST:
             return Object.assign({}, state, {
                 selectedPlaylistId: action.playlistId
@@ -38,7 +40,11 @@ export default function(state = {}, action) {
         case SWAP_PLAYLIST_POSITIONS:
             let playlistPosition = state.playlists.findIndex(playlist => action.playlistId == playlist.id)
             let playlist2Position = state.playlists.findIndex(playlist => action.playlistId2 == playlist.id)
+
+            // make a deep copy of the 2 playlists we want to swap, and a shallow copy of the rest.
             let newPlaylists = [...state.playlists]
+            newPlaylists[playlistPosition] = JSON.parse(JSON.stringify(state.playlists[playlistPosition]));
+            newPlaylists[playlist2Position] = JSON.parse(JSON.stringify(state.playlists[playlist2Position]));
 
             let temp = newPlaylists[playlistPosition];
             newPlaylists[playlistPosition] = newPlaylists[playlist2Position];
