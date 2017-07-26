@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import Course from './course/course.js';
+import Course from '../../containers/home/course.js';
 import Navbar from './navbar/navbar.js';
 import PlaylistSidebar from './playlistSidebar/playlistSidebar.js';
 
@@ -102,7 +102,7 @@ class Home extends Component {
         let courses = [];
 
         this.state.courses.forEach(course => {
-            courses.push(<Course key={course.id} id={course.id} name={course.name} />);
+            courses.push(<Course key={course.id} id={course.id} name={course.name} playlistId={this.state.selectedPlaylistId}/>);
         });
 
         this.initializeJQuery();
