@@ -14,3 +14,32 @@
     cursor: pointer;
     cursor: hand;
 }
+
+.navbar-dropdown-list {
+    display: none;
+    position: absolute;
+    margin-top: 48px;
+    background-color: white;
+    width: 200px !important;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1;
+    line-height: normal;
+}
+
+.navbar-dropdown-list a {
+    color: black;
+    padding-left: 15px;
+    padding-bottom: 7.5px;
+    padding-top: 7.5px;
+    font-size: 16px;
+}
+
+.navbar-dropdown-list li {
+    width: inherit;
+}
+
+.navbar-dropdown-list li:hover{
+    background-color: #EEE;
+    cursor: hand;
+    cursor: pointer;
+}
