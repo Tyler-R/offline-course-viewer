@@ -102,7 +102,7 @@ class Home extends Component {
         let courses = [];
 
         this.state.courses.forEach(course => {
-            courses.push(<Course key={course.id} id={course.id} name={course.name} playlistId={this.state.selectedPlaylistId}/>);
+            courses.push(<Course key={course.id} id={course.id} name={course.name} />);
         });
 
         this.initializeJQuery();
