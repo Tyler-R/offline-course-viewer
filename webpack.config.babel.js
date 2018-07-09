@@ -2,6 +2,7 @@ import extend from "extend";
 import path from "path";
 import webpack from "webpack";
 import nodeExternals from "webpack-node-externals";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 let config = {
     module: {
@@ -66,6 +67,14 @@ let clientElectronConfig = extend(true, {}, config, {
         __dirname: false,
         __filename: false,
     },
+
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'app/index.html', // uses lodash template engine by default
+            filename: "electron.index.html",
+            excludeChunks: [ 'main' ], // don't include the electron application
+        })
+    ],
 });
 
 
@@ -87,6 +96,11 @@ let clientWebConfig = extend(true, {}, config, {
             'process.env': {
                 'web_build': true
             }
+        }),
+
+        new HtmlWebpackPlugin({
+            template: 'app/index.html', // uses lodash template engine by default
+            filename: "web.index.html",
         }),
     ],
 });
