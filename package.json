@@ -2,13 +2,17 @@
   "name": "coursera-dl-viewer",
   "version": "1.0.0",
   "description": "A web site to view coursera videos downloaded using coursera-dl",
-  "main": "server.js",
+  "main": "build/public/main.bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+
     "build-watch": "./node_modules/.bin/webpack --progress --colors --watch",
     "build": "./node_modules/.bin/webpack --progress --colors",
+
     "start": "node build/server.js",
-    "run": "npm run build && npm run start"
+    "run": "npm run build && npm run start",
+
+    "electron": "./node_modules/.bin/electron -r babel-register ./build/public/main.electron.bundle.js"
   },
   "author": "Tyler Rubenuik",
   "license": "MIT",
