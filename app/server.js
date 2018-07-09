@@ -11,6 +11,14 @@ app.use('/', express.static(path.resolve(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+    if(req.headers['user-agent'] == 'Electron') {
+        res.sendFile(path.join(__dirname, 'public', 'electron.index.html'));
+    } else {
+        res.sendFile(path.join(__dirname, 'public', 'web.index.html'));
+    }
+});
+
 app.get('/playlists', (req, res) => {
     schema.playlist.findAll({
         attributes: ['id', 'position', 'name', 'isDefault']
