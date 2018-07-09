@@ -40,24 +40,55 @@ let config = {
 
     devServer: {
         contentBase: './build/public'
-    },/*,
+    },
+
+    /*
     plugins: [
         new webpack.optimize.UglifyJsPlugin()
   ]*/
 };
 
-let clientConfig = extend(true, {}, config, {
-    target: "web",
+let clientElectronConfig = extend(true, {}, config, {
+    target: "electron",
 
     entry: {
-        javascript: "./app/client.js"
+        entry: "./app/client.js",
+        main: "./app/main.js"
     },
 
     output: {
         path: path.resolve(__dirname, "build/public"),
-        publicPath: '/public/',
-        filename: 'bundle.js'
+        publicPath: '',
+        filename: '[name].electron.bundle.js'
     },
+
+    node: {
+        __dirname: false,
+        __filename: false,
+    },
+});
+
+
+let clientWebConfig = extend(true, {}, config, {
+    target: "web",
+
+    entry: {
+        entry: "./app/client.js"
+    },
+
+    output: {
+        path: path.resolve(__dirname, "build/public"),
+        publicPath: '',
+        filename: '[name].web.bundle.js'
+    },
+    
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'web_build': true
+            }
+        }),
+    ],
 });
 
 let serverConfig = extend(true, {}, config, {
@@ -81,4 +112,4 @@ let serverConfig = extend(true, {}, config, {
     externals: [nodeExternals()],
 });
 
-export default [clientConfig, serverConfig];
+export default [clientWebConfig, clientElectronConfig, serverConfig];
