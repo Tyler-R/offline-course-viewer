@@ -113,10 +113,10 @@ export function deleteCourse(courseId, playlistId) {
     }
 }
 
-export function addCourseToPlaylist(courseId, playlistId) {
+export function addCourseToPlaylist(course, playlistId) {
     return {
         type: ADD_COURSE_TO_PLAYLIST,
-        courseId,
+        course,
         playlistId,
     }
 }
