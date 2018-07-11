@@ -43,17 +43,17 @@ class Home extends Component {
 
             });
         } else {
-            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
+            this.getCourses(this.state.selectedPlaylistId);
         }
     }
 
     componentDidUpdate() {
         if(this.state.courses.length == 0) {
-            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
+            this.getCourses(this.state.selectedPlaylistId);
         }
     }
 
-    getCourses(playlists, selectedPlaylistId) {
+    getCourses(selectedPlaylistId) {
         axios.get('courses', {
             params: {
                 playlistId: selectedPlaylistId
