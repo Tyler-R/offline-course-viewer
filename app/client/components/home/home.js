@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import Course from '../../containers/home/course.js';
-import Navbar from './navbar/navbar.js';
+import Navbar from '../../containers/home/navbar.js';
 import PlaylistSidebar from './playlistSidebar/playlistSidebar.js';
 
 class Home extends Component {
@@ -39,7 +39,7 @@ class Home extends Component {
 
                 this.state.setSelectedPlaylistId(selectedPlaylistId);
                 this.state.onPlaylistsReceived(playlists);
-                this.getCourses(playlists, selectedPlaylistId);
+                this.getCourses(selectedPlaylistId);
 
             });
         } else {
