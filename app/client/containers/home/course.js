@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(deleteCourse(ownProps.id, ownProps.playlistId))
         },
         addCourseToPlaylist: () => {
-            dispatch(addCourseToPlaylist(ownProps.id, ownProps.playlistId))
+            dispatch(addCourseToPlaylist(ownProps.course, ownProps.playlistId))
         },
         swapCoursePositions: (courseId, courseId2) => {
             dispatch(swapCoursePositions(courseId, courseId2, ownProps.playlistId))
