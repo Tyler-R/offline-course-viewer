@@ -24,7 +24,7 @@ class Playlist extends Component {
     }
 
     deletePlaylist() {
-        axios.delete('/playlist/:id', {
+        axios.delete('/playlists/:id', {
             params: {
                 id: this.state.id
             }
@@ -63,7 +63,7 @@ class Playlist extends Component {
     }
 
     saveNewName() {
-        axios.put('/playlist/:id/:newName', {
+        axios.put('/playlists/:id/:newName', {
             params: {
                 id: this.state.id,
                 newName: this.state.newName
@@ -113,7 +113,7 @@ class Playlist extends Component {
         event.preventDefault();
         let draggedPlaylistId = event.dataTransfer.getData("text");
 
-        axios.put('/playlist/swap/:id/:id2', {
+        axios.put('/playlists/swap/:id/:id2', {
             params: {
                 id: this.state.id,
                 id2: draggedPlaylistId
