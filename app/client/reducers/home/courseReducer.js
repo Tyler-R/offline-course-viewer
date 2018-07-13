@@ -11,7 +11,9 @@ export default function(state = {}, action) {
                 [action.playlistId]: state[action.playlistId].filter(course => course.id != action.courseId),
             });
         case ADD_COURSE_TO_PLAYLIST:
-            return state;
+            return Object.assign({}, state, {
+                [action.playlistId]: [ ...state[action.playlistId], action.course ]
+            });
         case SWAP_COURSE_POSITION:
             return state;
         default: {

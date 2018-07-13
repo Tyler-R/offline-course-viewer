@@ -1,15 +1,25 @@
 var schema = require('./models/schema.js'),
     sequelize = require('./models/sequelize.js'),
+    promiseUtil = require('./utils/promiseUtil.js'),
     bodyParser = require('body-parser'),
     path = require('path'),
     express = require('express'),
-    app = express();
+    app = express(),
+    diskParser = require('./models/generator/diskParser.js');
 
 var port = 3030;
 
 app.use('/', express.static(path.resolve(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.get('/', (req, res) => {
+    if(req.headers['user-agent'] == 'Electron') {
+        res.sendFile(path.join(__dirname, 'public', 'electron.index.html'));
+    } else {
+        res.sendFile(path.join(__dirname, 'public', 'web.index.html'));
+    }
+});
 
 app.get('/playlists', (req, res) => {
     schema.playlist.findAll({
@@ -125,6 +135,35 @@ app.get('/lectures', (req, res) => {
         });
 
         res.send(response);
+    });
+});
+
+app.post('/courses/add/:file-paths', (req, res) => {
+    let filePaths = req.body.params['file-paths'];
+    console.log("recived request to add course for: " + filePaths);
+
+    if(!filePaths) {
+        res.status(500).send("Invalid file path");
+    }
+
+    promiseUtil.forEach(filePaths, (filePath) => {
+        return diskParser.addPreviouslyDownloadedCourseToDatabase(filePath)
+    }).then((data) => {
+        if (data.length >= 1) {
+            let courses = []
+            let playlistId = data[0].playlistId
+            data.forEach(val => {
+                courses.push(val.course)
+            });
+
+            let response = { courses, playlistId}
+            res.send(response);
+        } else {
+            console.log("Error: Course could not be added to the database.")
+            res.status(500).send("Error: Course could not be added to the database.")
+        }
+    }).catch((err) => {
+        res.status(500).send(err);
     });
 });
 

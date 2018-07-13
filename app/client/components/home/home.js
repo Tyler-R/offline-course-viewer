@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import Course from '../../containers/home/course.js';
-import Navbar from './navbar/navbar.js';
+import Navbar from '../../containers/home/navbar.js';
 import PlaylistSidebar from './playlistSidebar/playlistSidebar.js';
 
 class Home extends Component {
@@ -39,21 +39,21 @@ class Home extends Component {
 
                 this.state.setSelectedPlaylistId(selectedPlaylistId);
                 this.state.onPlaylistsReceived(playlists);
-                this.getCourses(playlists, selectedPlaylistId);
+                this.getCourses(selectedPlaylistId);
 
             });
         } else {
-            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
+            this.getCourses(this.state.selectedPlaylistId);
         }
     }
 
     componentDidUpdate() {
         if(this.state.courses.length == 0) {
-            this.getCourses(this.state.playlists, this.state.selectedPlaylistId);
+            this.getCourses(this.state.selectedPlaylistId);
         }
     }
 
-    getCourses(playlists, selectedPlaylistId) {
+    getCourses(selectedPlaylistId) {
         axios.get('courses', {
             params: {
                 playlistId: selectedPlaylistId
@@ -102,7 +102,7 @@ class Home extends Component {
         let courses = [];
 
         this.state.courses.forEach(course => {
-            courses.push(<Course key={course.id} id={course.id} name={course.name} playlistId={this.state.selectedPlaylistId}/>);
+            courses.push(<Course key={course.id} id={course.id} name={course.name} />);
         });
 
         this.initializeJQuery();

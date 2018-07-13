@@ -5,21 +5,40 @@ import axios from 'axios';
 import style from './navbar.scss';
 import dropdown from '../dropdown/dropdown.scss'
 
+let addDownloadedCoursesToApp:any;
+
+// only import electron functions if we are in the electron build.
+// If we try to import electron functions into a web app it will crash.
+if (!process.env.web_build) {
+    addDownloadedCoursesToApp = require('../../../electron/courseAdder.js').addDownloadedCoursesToApp
+} else {
+    addDownloadedCoursesToApp = (addCourseToPlaylist) => {
+        M.toast({
+            html: '<b>This option only works in the Electron application.</b>', 
+            classes: 'red rounded', 
+            displayLength: 4000,
+        });
+    }
+}
+
 class Navbar extends Component {
     constructor(props) {
         super(props)
 
+        this.initializeState(props);
+    }
+
+    componentWillReceiveProps(props) {
+        this.initializeState(props);
+    }
+
+    initializeState(props) {
         this.state = {
-
-        }
+            addCourseToPlaylist: props.addCourseToPlaylist,
+        };
     }
-
-    addCourseraCourse() {
-
-    }
-
     addCourseraCourses() {
-
+        addDownloadedCoursesToApp(this.state.addCourseToPlaylist);
     }
 
     componentDidMount() {
@@ -32,8 +51,7 @@ class Navbar extends Component {
         return (
             <div className="navbar-fixed">
                 <ul id="navbar-dropdown" className="right navbar-dropdown-list">
-                    <li onClick={e => this.addCourseraCourse()}><a className="black-text">Add coursera-dl Course</a></li>
-                    <li onClick={e => this.addCourseraCourses()}><a className="black-text">Add coursera-dl Courses</a></li>
+                    <li onClick={e => this.addCourseraCourses()}><a className="black-text">Add coursera-dl Course(s)</a></li>
                 </ul>
 
                 <nav>
