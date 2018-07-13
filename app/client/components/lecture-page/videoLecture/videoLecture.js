@@ -21,7 +21,7 @@ class VideoLecture extends Component {
         let currentTime = this.videoPlayer.currentTime;
 
         if(currentTime / this.state.duration >= 0.9 && !this.state.completionMessageSent) {
-            axios.put('/lecture/complete/:lectureId', {
+            axios.put('/lectures/complete/:lectureId', {
                 params: {
                     lectureId: this.state.id
                 }

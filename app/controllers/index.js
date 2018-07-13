@@ -4,5 +4,6 @@ let express = require('express'),
 router.use('/playlists', require('./playlists'));
 router.use('/courses', require('./courses'));
 router.use('/weeks', require('./weeks'))
+router.use('/lectures', require('./lectures'))
 
 module.exports = router
