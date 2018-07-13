@@ -1,5 +1,6 @@
 var fs = require('fs'),
     path = require('path'),
+    sequelize = require('sequelize'),
     schema = require('../schema.js');
 
 
@@ -14,49 +15,6 @@ function getFoldersInDirectory(folderPath) {
             }
         });
     });
-}
-
-module.exports.addPreviouslyDownloadedCoursesToDatabase = (folderPath) => {
-    schema.playlist.findOrCreate({
-        where: {
-            isDefault: true
-        }, defaults: {
-            name: "Default",
-            position: 0,
-            isDefault: true,
-        }
-    }).spread((savedPlaylist, wasCreated) => {
-        var playlistId = savedPlaylist.id;
-        schema.course.max('position', {
-            where: {
-                playlistId
-            }
-        }).then(maxPosition => {
-            if(!maxPosition) {
-                maxPosition = 0;
-            }
-            getFoldersInDirectory(folderPath).then(folders => {
-                folders.forEach((courseName) => {
-                    console.log("building data for: " + courseName);
-
-                    getCourseInformationFromDisk(path.join(folderPath, courseName), courseName)
-                    .then((courseMap) => {
-
-                        addCourseDiskInformationToDatabase(courseName, playlistId, maxPosition, courseMap);
-                        maxPosition++;
-                    }).catch((err) => {
-                        console.log("could not add '" + folder + "' to course list as it does not have the correct folder structure.");
-                        console.log(err);
-                    });
-                });
-            }).catch((err) => {
-                console.log("could not get foilders in: " + folderPath + " because: ");
-                console.log(err);
-            });
-        });
-
-    });
-
 }
 
 function mapLectureInformationToLectureFiles(lectureFiles) {
@@ -76,6 +34,49 @@ function mapLectureInformationToLectureFiles(lectureFiles) {
     });
 
     return lectureMapping;
+}
+
+module.exports.addPreviouslyDownloadedCourseToDatabase = (folderPath) => {
+    return new Promise((success, failure) => {
+        schema.playlist.findOrCreate({
+            where: {
+                isDefault: true
+            }, defaults: {
+                name: "Default",
+                position: 0,
+                isDefault: true,
+            }
+        }).spread((savedPlaylist, wasCreated) => {
+            var playlistId = savedPlaylist.id;
+            
+            schema.course.max('position', {
+                where: {
+                    playlistId
+                }
+            }).then(maxPosition => {
+                if(!maxPosition) {
+                    maxPosition = 0;
+                }
+
+                var courseName = path.parse(folderPath).base;
+                console.log("attempting to add '" + courseName + "' to database from the path: " + folderPath);
+
+                getCourseInformationFromDisk(folderPath, courseName)
+                .then((courseMap) => {
+                    addCourseDiskInformationToDatabase(courseName, playlistId, maxPosition + 1, courseMap)
+                    .then((course) => {
+                        success(course);
+                    }).catch((err) => {
+                        failure(err)
+                    });
+                }).catch((err) => {
+                    console.log("could not add '" + folder + "' to course list as it does not have the correct folder structure.");
+                    console.log(err);
+                    failure("Error: could not add '" + folder + "' to course list as it does not have the correct folder structure.")
+                });
+            });
+        });
+    });
 }
 
 function getCourseInformationFromDisk(courseFolderPath, courseName) {
@@ -165,6 +166,7 @@ function getLectureGroupInfomationFromDisk(courseFolderPath, weekFolders) {
 function getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders, weekFolder) {
     return new Promise((success, failure) => {
         var promises = [];
+
         lectureGroupFolders.forEach(lectureGroupFolder => {
             var lectureGroupFolderPath = path.join(weekFolderPath, lectureGroupFolder);
             promises.push(new Promise((success, failure) => {
@@ -203,21 +205,44 @@ function getLectureInformationFromDisk(weekFolderPath, lectureGroupFolders, week
     });
 }
 
-function addCourseDiskInformationToDatabase(courseName, playlistId, position, courseMap) {
-    var name = courseName.replace(/-/g, ' ');
 
-    schema.course.build({
-        name,
-        position,
-        playlistId
-    }).save()
-    .then(savedCourse => {
-        for (var weekFolderName in courseMap[courseName]) {
-            addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, courseMap[courseName]);
-        }
-    }).catch(err => {
-        console.log("could not insert '" + courseName + "' into the course database because: ");
-        console.log(err);
+
+
+function addCourseDiskInformationToDatabase(courseName, playlistId, position, courseMap) {
+    return new Promise((success, failure) => {
+        let name = courseName.replace(/-/g, ' ');
+
+        schema.course.build({
+            name,
+            position,
+            playlistId
+        }).save()
+        .then(savedCourse => {
+            let promises = []
+
+            for (var weekFolderName in courseMap[courseName]) {
+                promises.push(addWeekDiskInformationToDatabase(savedCourse.id, weekFolderName, courseMap[courseName]));
+            }
+
+            Promise.all(promises)
+            .then(() => {
+                let id = savedCourse.id
+                let course = { id, name }
+
+                success({ course, playlistId });
+            }).catch((err) => {
+                failure(err);
+            });
+        }).catch(err => {
+            if (err instanceof sequelize.UniqueConstraintError) {
+                console.log("Could not add course with name '" + name + "' because a course with that name is already in the database.");
+                failure("A course with the same name already exists. Either delete the old course or change the name of your new course.");
+            } else {
+                console.log("could not insert '" + name + "' into the course database because: ");
+                console.log(err);
+                failure("Error: could not insert '" + name + "' into the course database. Try again.");
+            }
+        });
     });
 }
 
@@ -258,7 +283,20 @@ function addLectureInformationToDatabase(lectureGroupId, lectureName, lectureMap
     var position = parsedLectureName[0];
     var name = parsedLectureName[1].replace(/-/g, ' ');
 
-    schema.lecture.build({position, name, lectureGroupId}).save()
+    // find if the lecture is a video or reading lecture
+    var type = 'unknown';
+    lectureMap[lectureName].forEach(lectureFile => {
+        var parsedLectureFileName = lectureFile.name.split('.');
+        var extension = parsedLectureFileName[parsedLectureFileName.length - 1];
+
+        if(extension == 'mp4') {
+            type = 'video';
+        } else if(extension == "html" || extension == "htm") {
+            type = 'reading';
+        }
+    });
+
+    schema.lecture.build({position, name, type, lectureGroupId}).save()
     .then(savedLecture => {
         lectureMap[lectureName].forEach(lectureFile => {
             addLectureFileInformationToDatabase(savedLecture.id, lectureFile);
@@ -286,9 +324,3 @@ function addLectureFileInformationToDatabase(lectureId, lectureFile) {
         console.log(err);
     });
 }
-
-var rootFolder = "F:\\Dropbox\\courses\\www-coursera-downloader"
-
-schema.syncAll().then(() => {
-    this.addPreviouslyDownloadedCoursesToDatabase(rootFolder);
-});
