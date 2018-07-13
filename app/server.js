@@ -13,6 +13,8 @@ app.use('/', express.static(path.resolve(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(require('./controllers'));
+
 app.get('/', (req, res) => {
     if(req.headers['user-agent'] == 'Electron') {
         res.sendFile(path.join(__dirname, 'public', 'electron.index.html'));
@@ -20,30 +22,6 @@ app.get('/', (req, res) => {
         res.sendFile(path.join(__dirname, 'public', 'web.index.html'));
     }
 });
-
-app.get('/playlists', (req, res) => {
-    schema.playlist.findAll({
-        attributes: ['id', 'position', 'name', 'isDefault']
-    }).then(playlists => {
-        let response = {
-            playlists: [],
-            defaultPlaylistId: undefined,
-        }
-        playlists.forEach(playlist => {
-            response.playlists.push({
-                id: playlist.id,
-                position: playlist.position,
-                name: playlist.name,
-            });
-
-            if(playlist.isDefault) {
-                response.defaultPlaylistId = playlist.id;
-            }
-        });
-
-        res.send(response);
-    })
-})
 
 app.get('/courses', (req, res) => {
     let playlistId = req.query.playlistId
