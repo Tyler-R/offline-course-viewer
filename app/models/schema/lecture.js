@@ -1,6 +1,6 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    lectureFile = require('./lectureFile.js');
+    lectureFile = require('./lectureFile');
 
 var lecture = sequelize.define('lecture', {
     id: {
@@ -27,6 +27,6 @@ var lecture = sequelize.define('lecture', {
     timestamps: false,
 });
 
-lecture.hasMany(lectureFile);
+lecture.hasMany(lectureFile, { onDelete: 'cascade' });
 
 module.exports = lecture;

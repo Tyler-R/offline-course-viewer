@@ -1,7 +1,6 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    lectureGroup = require('./lectureGroup.js');
-
+    lectureGroup = require('./lectureGroup');
 
 var week = sequelize.define('week', {
     id: {
@@ -20,6 +19,6 @@ var week = sequelize.define('week', {
     timestamps: false,
 });
 
-week.hasMany(lectureGroup);
+week.hasMany(lectureGroup, { onDelete: 'cascade' });
 
 module.exports = week;

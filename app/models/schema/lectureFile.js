@@ -1,6 +1,6 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    lecture = require('./lecture.js');
+    lecture = require('./lecture');
 
 
 module.exports = sequelize.define('lectureFile', {

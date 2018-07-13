@@ -1,6 +1,6 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    course = require('./course.js');
+    course = require('./course');
 
 
 var playlist = sequelize.define('playlist', {
@@ -25,6 +25,6 @@ var playlist = sequelize.define('playlist', {
     timestamps: false,
 });
 
-playlist.hasMany(course);
+playlist.hasMany(course, { onDelete: 'cascade' });
 
 module.exports = playlist;

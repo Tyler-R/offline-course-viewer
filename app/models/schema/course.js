@@ -1,6 +1,6 @@
 var sequelize = require('../sequelize.js'),
     dataType = require('sequelize'),
-    week = require('./week.js');
+    week = require('./week');
 
 var course = sequelize.define('course', {
     id: {
@@ -20,6 +20,6 @@ var course = sequelize.define('course', {
     timestamps: false,
 });
 
-course.hasMany(week);
+course.hasMany(week, { onDelete: 'cascade' });
 
 module.exports = course;
