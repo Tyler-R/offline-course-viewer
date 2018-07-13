@@ -23,55 +23,6 @@ app.get('/', (req, res) => {
     }
 });
 
-app.get('/lectureGroups', (req, res) => {
-    let weekId = req.query.weekId;
-
-    schema.lectureGroup.findAll({
-        attributes: ["id", "position", "name"],
-        where: {
-            weekId
-        },
-        order: "position"
-    }).then(lectureGroups => {
-        let response = [];
-        lectureGroups.forEach(lectureGroup => {
-            response.push({
-                id: lectureGroup.id,
-                name: lectureGroup.name,
-                position: lectureGroup.position,
-            });
-        });
-
-        res.send(response);
-    });
-});
-
-app.get('/lectures', (req, res) => {
-    let lectureGroupId = req.query.lectureGroupId;
-
-
-    schema.lecture.findAll({
-        attributes: ["id", "position", "name", "type", "completed"],
-        where: {
-            lectureGroupId
-        },
-        order: "position"
-    }).then(lectures => {
-        let response = [];
-        lectures.forEach(lecture => {
-            response.push({
-                id: lecture.id,
-                name: lecture.name,
-                position: lecture.position,
-                type: lecture.type,
-                completed: lecture.completed,
-            });
-        });
-
-        res.send(response);
-    });
-});
-
 app.get('/stream', (req, res) => {
     let lectureId = req.query.lectureId;
 
@@ -87,21 +38,6 @@ app.get('/stream', (req, res) => {
                 console.log(err);
             }
         });
-    });
-});
-
-app.put('/lecture/complete/:lectureId', (req, res) => {
-    let lectureId = req.body.params.lectureId;
-
-    schema.lecture.update(
-        {completed: true},
-        {
-            where: {
-                id: lectureId
-            }
-        }
-    ).catch(err => {
-        console.log("ERROR in /lecture/complete/:lectureId: " + JSON.stringify(err));
     });
 });
 
