@@ -47,12 +47,6 @@ class Home extends Component {
         }
     }
 
-    componentDidUpdate() {
-        if(this.state.courses.length == 0) {
-            this.getCourses(this.state.selectedPlaylistId);
-        }
-    }
-
     getCourses(selectedPlaylistId) {
         axios.get('courses', {
             params: {
