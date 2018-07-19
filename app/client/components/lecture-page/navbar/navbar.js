@@ -8,7 +8,7 @@ const Navbar = () => {
         <div className="navbar-fixed">
             <nav>
                 <div className="nav-wrapper white">
-                    <a href="#" className="navbar-logo">coursera-dl-viewer</a>
+                    <a href="#" className="navbar-logo">offline-course-viewer</a>
                     <ul className="right">
                         <li className="navbar-menu">Settings</li>
                     </ul>

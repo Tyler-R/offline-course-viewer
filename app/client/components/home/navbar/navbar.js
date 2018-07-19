@@ -56,7 +56,7 @@ class Navbar extends Component {
 
                 <nav>
                     <div className="nav-wrapper white">
-                        <a href="#" className="navbar-logo">coursera-dl-viewer</a>
+                        <a href="#" className="navbar-logo">offline-course-viewer</a>
                         <span className="navbar-menu right" data-activates="navbar-dropdown">Settings</span>
                     </div>
                 </nav>
