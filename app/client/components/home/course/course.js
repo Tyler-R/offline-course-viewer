@@ -49,7 +49,15 @@ class Course extends Component {
     }
 
     deleteCourse(event) {
-        this.state.deleteCourse();
+        axios.delete('/courses/:id', {
+            params: {
+                id: this.state.id,
+            }
+        }).then(() => {
+            this.state.deleteCourse(this.state.playlistId);
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
     render() {
