@@ -24,6 +24,25 @@ router.get('/', (req, res) => {
     });
 });
 
+router.delete('/:id', (req, res) => {
+    let id = req.query.id
+
+    schema.course.destroy({
+        where: {
+            id
+        }
+    }).then(coursesDeleted => {
+        if(coursesDeleted != 1) {
+            // this should never happen.
+            console.log("More than one course was deleted based on a primary key.");
+        }
+
+        res.send();
+    }).catch((err) => {
+        res.status(403).send("Failed to delete the course.");
+    });
+});
+
 router.post('/add/:file-paths', (req, res) => {
     let filePaths = req.body.params['file-paths'];
     console.log("recived request to add course for: " + filePaths);
