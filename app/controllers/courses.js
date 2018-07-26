@@ -12,7 +12,8 @@ router.get('/', (req, res) => {
         attributes: ['id', 'position', 'name'],
         where: {
             playlistId
-        }
+        },
+        order: "position"
     }).then(courses => {
         var response = []
         courses.forEach(course => {
