@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { deleteCourse, addCourseToPlaylist, swapCoursePositions } from '../../actions/index.js';
+import { deleteCourse, renameCourse, addCourseToPlaylist, swapCoursePositions } from '../../actions/index.js';
 import Course from '../../components/home/course/course.js';
 
 const mapStateToProps = (state, ownProps) => {
@@ -14,6 +14,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        renameCourse: (playlistId, name) => {
+            dispatch(renameCourse(ownProps.id, playlistId, name))
+        },
         deleteCourse: (playlistId) => {
             dispatch(deleteCourse(ownProps.id, playlistId))
         },
