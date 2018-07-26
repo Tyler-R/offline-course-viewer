@@ -126,7 +126,7 @@ class Playlist extends Component {
     }
 
     render() {
-        let editModeDisplay = (
+        let renamePlaylistForm = (
             <tr>
                 <form onSubmit={e => this.saveNewName()}>
                     <input className="playlist-title" autoFocus value={this.state.newName} onChange={e => this.updateNewName(e)}/>
@@ -181,7 +181,7 @@ class Playlist extends Component {
                     <table>
                         <tbody>
                             {this.state.inEditMode && !this.state.inMoveMode &&
-                                editModeDisplay
+                                renamePlaylistForm
                             }
 
                             {!this.state.inEditMode && !this.state.inMoveMode &&
