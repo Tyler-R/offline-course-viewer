@@ -1,6 +1,7 @@
 let express = require('express'),
 	router = express.Router(),
 	schema = require('../models/schema.js'),
+    sequelize = require('sequelize'),
 	promiseUtil = require('../utils/promiseUtil'),
 	diskParser = require('../models/generator/diskParser');
 
@@ -42,6 +43,29 @@ router.delete('/:id', (req, res) => {
         res.status(403).send("Failed to delete the course.");
     });
 });
+
+router.put('/:id/:name', (req, res) => {
+    let id = req.body.params.id;
+    let name = req.body.params.name;
+
+    schema.course.update(
+        {name},
+        {
+            where: {
+                id
+            }
+        }
+    ).then(course => {
+        res.send()
+    }).catch(err => {
+        if (err instanceof sequelize.UniqueConstraintError) {
+            res.status(403).send("Could not rename the course since a course with the name '" + name + "' already exists")
+        } else {
+            res.status(403).send("Failed to change course name");
+        }
+    });
+});
+
 
 router.post('/add/:file-paths', (req, res) => {
     let filePaths = req.body.params['file-paths'];
