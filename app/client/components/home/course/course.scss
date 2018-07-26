@@ -20,7 +20,7 @@
     display: table-cell;
     vertical-align: top;
     margin-left: left;
-    font-size: 24px;
+    font-size: 24px !important;
     width: 90%;
 }
 
@@ -63,4 +63,8 @@
     background-color: #EEE;
     cursor: hand;
     cursor: pointer;
+}
+
+.course-rename-form {
+    padding: 0px 25px 15px;
 }
