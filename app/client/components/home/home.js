@@ -62,21 +62,6 @@ class Home extends Component {
 
     initializeJQuery() {
         $(document).ready(() => {
-            $(".dropdown").off('click');
-            $(".dropdown").click((e) => {
-                if($(e.target).hasClass('course-settings-icon')) {
-                    // dropdown icon was clicked so display dropdown menu
-                    $(e.target).siblings(".course-dropdown-list").toggleClass("show");
-                } else if($(e.target).hasClass('playlist-icon')) {
-                    $(e.target).siblings(".playlist-dropdown-list").toggleClass('show');
-                } else if($(e.target).parents('.course-dropdown-list').hasClass('show')){
-                    // item in dropdown menu was clicked
-                    $(e.target).parents('.course-dropdown-list').toggleClass("show")
-                } else if($(e.target).parents('.playlist-dropdown-list').hasClass('show')) {
-                    $(e.target).parents('.playlist-dropdown-list').toggleClass("show")
-                }
-            });
-
             window.onclick = (e) => {
                 let dropdowns = []
                 dropdowns.push.apply(dropdowns, document.getElementsByClassName("course-dropdown-list"));

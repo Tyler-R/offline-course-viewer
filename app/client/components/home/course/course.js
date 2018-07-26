@@ -99,6 +99,21 @@ class Course extends Component {
         });
     }
 
+    toggleSettingsDropdown(event) {
+        let target = $(event.target)
+
+        let dropdownButtonClicked = target.hasClass('course-settings-icon')
+        let dropdownItemClicked = target.parents('.course-dropdown-list').hasClass('show')
+
+        if(dropdownButtonClicked) {
+            // dropdown icon was clicked so display dropdown menu
+            target.siblings(".course-dropdown-list").toggleClass("show");
+        } else if(dropdownItemClicked) {
+            // item in dropdown menu was clicked so hide dropdown
+            target.parents('.course-dropdown-list').toggleClass("show")
+        }
+    }
+
     render() {
         let weeks = [];
         if (this.state.weeks && !this.state.collapsed) {
@@ -111,11 +126,11 @@ class Course extends Component {
 
         let optionsMenu = (
             <td className="dropdown right" onClick={e => e.stopPropagation()}>
-                <i className="material-icons black-text course-settings-icon">
+                <i className="material-icons black-text course-settings-icon" onClick={e => this.toggleSettingsDropdown(e)}>
                     settings
                 </i>
 
-                <ul id={this.state.id} className="course-dropdown-list">
+                <ul id={this.state.id} className="course-dropdown-list" onClick={e => this.toggleSettingsDropdown(e)}>
                     <li onClick={e => this.enterEditMode()}><a>Rename</a></li>
                     <li><a href='#'>Move</a></li>
                     <li onClick={e => this.deleteCourse(e)}><a>Delete</a></li>

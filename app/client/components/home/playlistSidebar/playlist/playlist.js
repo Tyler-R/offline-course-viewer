@@ -125,6 +125,21 @@ class Playlist extends Component {
         });
     }
 
+    toggleSettingsDropdown(event) {
+        let target = $(event.target)
+
+        let dropdownButtonClicked = target.hasClass('playlist-icon')
+        let dropdownItemClicked = target.parents('.playlist-dropdown-list').hasClass('show')
+
+        if(dropdownButtonClicked) {
+            // dropdown icon was clicked so display dropdown menu
+            target.siblings(".playlist-dropdown-list").toggleClass('show');
+        } else if(dropdownItemClicked) {
+            // item in dropdown menu was clicked so hide dropdown
+            target.parents('.playlist-dropdown-list').toggleClass("show")
+        }
+    }
+
     render() {
         let renamePlaylistForm = (
             <tr>
@@ -146,11 +161,11 @@ class Playlist extends Component {
                 <span className="playlist-title">{this.state.name}</span>
 
                 <span className="dropdown right" onClick={e => e.stopPropagation()}>
-                    <i className="material-icons playlist-icon">
+                    <i className="material-icons playlist-icon" onClick={e => this.toggleSettingsDropdown(e)}>
                         settings
                     </i>
 
-                    <ul id={this.state.id} className="playlist-dropdown-list">
+                    <ul id={this.state.id} className="playlist-dropdown-list" onClick={e => this.toggleSettingsDropdown(e)}>
                         <li onClick={e => this.enterEditMode()}><a>Rename</a></li>
                         <li onClick={e => this.enterMoveMode()}><a>Move</a></li>
                         <li onClick={e => this.deletePlaylist()}><a>Delete</a></li>
