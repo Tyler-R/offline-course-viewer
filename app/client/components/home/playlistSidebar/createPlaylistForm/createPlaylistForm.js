@@ -22,6 +22,8 @@ class CreatePlaylistForm extends Component {
             }
         }).then((playlist) => {
             this.state.onPlaylistCreated(playlist.data)
+        }).catch(err => {
+            alert("Could not create playlist.");
         });
 
         this.setState({

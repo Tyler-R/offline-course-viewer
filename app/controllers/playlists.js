@@ -3,6 +3,7 @@ let express = require('express'),
 	sequelize = require('../models/sequelize.js'),
 	schema = require('../models/schema.js');
 
+// get all playlists
 router.get('/', (req, res) => {
     schema.playlist.findAll({
         attributes: ['id', 'position', 'name', 'isDefault']
@@ -27,22 +28,27 @@ router.get('/', (req, res) => {
     });
 });
 
-
+// create playlist
 router.post('/:name', (req, res) => {
     let name = req.body.params.name;
 
-    schema.playlist.max('position')
-    .then((maxPosition) => {
-        schema.playlist.create({
-            name,
-            position: maxPosition + 1,
-            isDefault: false,
-        }).then((playlist) => {
-            res.send(playlist);
+    sequelize.transaction(transaction => {
+        return schema.playlist.max('position')
+        .then(maxPosition => {
+            return schema.playlist.create({
+                name,
+                position: maxPosition + 1,
+                isDefault: false,
+            });
         });
+    }).then((playlist) => {
+        res.send(playlist);
+    }).catch(err => {
+        res.status(403).send("Could not create playlist");
     });
 });
 
+// swap playlist positions
 router.put('/swap/:id/:id2', (req, res) => {
     let id = req.body.params.id;
     let id2 = req.body.params.id2;
