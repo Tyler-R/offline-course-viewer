@@ -15,6 +15,7 @@ export const SWAP_PLAYLIST_POSITIONS = "SWAP_PLAYLIST_POSITIONS";
 
 export const ADD_COURSES = "ADD_COURSES";
 export const DELETE_COURSE = "DELETE_COURSE"
+export const RENAME_COURSE = "RENAME_COURSE";
 export const ADD_COURSE_TO_PLAYLIST = "ADD_COURSE_TO_PLAYLIST"
 export const SWAP_COURSE_POSITION = "SWAP_COURSE_POSITION"
 
@@ -110,6 +111,15 @@ export function deleteCourse(courseId, playlistId) {
         type: DELETE_COURSE,
         courseId,
         playlistId,
+    }
+}
+
+export function renameCourse(courseId, playlistId, name) {
+    return {
+        type: RENAME_COURSE,
+        courseId,
+        playlistId,
+        name,
     }
 }
 
