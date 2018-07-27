@@ -133,35 +133,42 @@ router.put('/:id/:newName', (req, res) => {
 router.delete('/:id', (req, res) => {
     let id = req.query.id
 
-    schema.playlist.find({
-        attributes: ['id'],
-        where: {
-            isDefault: true
-        }
-    }).then(defaultPlaylist => {
-        if(defaultPlaylist.id == id) {
-            res.status(403).send("Cannot delete default playlist");
-            return;
-        }
-
-        schema.course.update(
-            {playlistId: defaultPlaylist.id},
-            {
-                where: {
-                    playlistId: id
-                }
+    sequelize.transaction({
+        isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
+    }, transaction => {
+        return schema.playlist.find({
+            attributes: ['id'],
+            where: {
+                isDefault: true
+            },
+            transaction
+        }).then(defaultPlaylist => {
+            if(defaultPlaylist.id == id) {
+                res.status(403).send("Cannot delete default playlist");
+                return;
             }
-        ).then(() => {
-            schema.playlist.find({
-                where: {
-                    id
+            // move all courses to default playlist.
+            return schema.course.update(
+                {playlistId: defaultPlaylist.id},
+                {
+                    where: {
+                        playlistId: id
+                    },
+                    transaction
                 }
-            }).then(playlist => {
-                return playlist.destroy();
-            }).then(() => {
-                res.status(200).send();
+            ).then(() => {
+                return schema.playlist.find({
+                    where: {
+                        id
+                    },
+                    transaction
+                }).then(playlist => {
+                    return playlist.destroy({transaction});
+                })
             });
         });
+    }).then(() => {
+        res.send();
     });
 });
 
