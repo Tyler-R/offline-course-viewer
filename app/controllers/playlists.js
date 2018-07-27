@@ -32,7 +32,9 @@ router.get('/', (req, res) => {
 router.post('/:name', (req, res) => {
     let name = req.body.params.name;
 
-    sequelize.transaction(transaction => {
+    sequelize.transaction({
+        isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
+    }, transaction => {
         return schema.playlist.max('position', {transaction})
         .then(maxPosition => {
             return schema.playlist.create({
@@ -55,7 +57,9 @@ router.put('/swap/:id/:id2', (req, res) => {
     let id = req.body.params.id;
     let id2 = req.body.params.id2;
 
-    sequelize.transaction(transaction => {
+    sequelize.transaction({
+        isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
+    }, transaction => {
         return schema.playlist.findAll({
             attributes: ["id", "position"],
             where: {
