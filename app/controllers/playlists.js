@@ -33,13 +33,15 @@ router.post('/:name', (req, res) => {
     let name = req.body.params.name;
 
     sequelize.transaction(transaction => {
-        return schema.playlist.max('position')
+        return schema.playlist.max('position', {transaction})
         .then(maxPosition => {
             return schema.playlist.create({
                 name,
                 position: maxPosition + 1,
                 isDefault: false,
-            });
+            },
+            {transaction}
+            );
         });
     }).then((playlist) => {
         res.send(playlist);
@@ -76,27 +78,27 @@ router.put('/swap/:id/:id2', (req, res) => {
                 {
                     where: {
                         id: playlistId1
-                    }
+                    },
+                    transaction
                 },
-                {transaction}
             ).then((playlist) => {
                 return schema.playlist.update(
                     {position: playlistPosition1},
                     {
                         where: {
                             id: playlistId2
-                        }
+                        },
+                        transaction
                     },
-                    {transaction}
                 ).then((playlist) => {
                     return schema.playlist.update(
                         {position: playlistPosition2},
                         {
                             where: {
                                 id: playlistId1
-                            }
+                            },
+                            transaction
                         },
-                        {transaction}
                     );
                 });
             });
