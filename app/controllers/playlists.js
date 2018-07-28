@@ -142,39 +142,14 @@ router.delete('/:id', (req, res) => {
     sequelize.transaction({
         isolationLevel: sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
     }, transaction => {
-        return schema.playlist.find({
-            attributes: ['id'],
-            where: {
-                isDefault: true
-            },
-            transaction
-        }).then(defaultPlaylist => {
-            if(defaultPlaylist.id == id) {
-                res.status(403).send("Cannot delete default playlist");
-                return;
-            }
-            // move all courses to default playlist.
-            return schema.course.update(
-                {playlistId: defaultPlaylist.id},
-                {
-                    where: {
-                        playlistId: id
-                    },
-                    transaction
-                }
-            ).then(() => {
-                return schema.playlist.find({
-                    where: {
-                        id
-                    },
-                    transaction
-                }).then(playlist => {
-                    return playlist.destroy({transaction});
-                })
-            });
+        return schema.playlist.moveCoursesToDefaultPlaylist(id, transaction)
+        .then(() => {
+            return schema.playlist.delete(id, transaction);
         });
     }).then(() => {
         res.send();
+    }).catch(err => {
+        res.status(403).send(err.message);
     });
 });
 
